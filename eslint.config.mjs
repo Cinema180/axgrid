@@ -42,15 +42,14 @@ export default [
     'airbnb-typescript',
     'plugin:cypress/recommended',
     'plugin:eslint-comments/recommended',
-    'plugin:import/recommended',
     'plugin:jest/recommended',
-    'plugin:prettier/recommended',
     'plugin:promise/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:typescript-sort-keys/recommended'
+    'plugin:typescript-sort-keys/recommended',
+    'prettier'
   ),
 ];
