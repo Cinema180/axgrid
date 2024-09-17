@@ -34,6 +34,10 @@ export default [
       jest,
       promise,
     },
+
+    rules: {
+      'import/no-extraneous-dependencies': 'off',
+    },
   },
 
   // Extends (Airbnb, Typescript, Prettier) using FlatCompat
