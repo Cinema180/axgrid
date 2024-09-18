@@ -1,5 +1,29 @@
-export type EnergySource = 'solar' | 'gas' | 'wind' | 'hydro';
-export type TradeAction = 'proceed' | 'cancel' | 'reject' | 'fail' | 'await confirmation';
+export type EnergySource =
+  | 'solar'
+  | 'gas'
+  | 'wind'
+  | 'hydro'
+  | 'kinetic'
+  | 'thermal';
+
+export type OfferingDetails = {
+  [key: string]: string | number;
+  contractTerms: string;
+  currency: string;
+  energySource: EnergySource;
+  energyUnit: string;
+  minPurchaseQuantity: number;
+  paymentTerms: string;
+  price: number;
+};
+
+export type TradeAction =
+  | 'proceed'
+  | 'cancel'
+  | 'reject'
+  | 'fail'
+  | 'await confirmation';
+
 export type TradeStatus =
   | 'pending'
   | 'processing'
@@ -10,9 +34,9 @@ export type TradeStatus =
   | 'failed'
   | 'awaiting confirmation';
 
-export interface Trade {
+export type Trade = {
   amount: number;
-  energySource: EnergySource;
-  id: number;
+  id: string;
+  offeringDetails: OfferingDetails;
   status: TradeStatus;
-}
+};

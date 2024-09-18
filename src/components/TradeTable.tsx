@@ -24,7 +24,7 @@ function TradeTable() {
     };
   }, []);
 
-  const handleConfirmTrade = (tradeId: number) => {
+  const handleConfirmTrade = (tradeId: string) => {
     tradeService.confirmTrade(tradeId);
   };
 
