@@ -40,3 +40,8 @@ export type Trade = {
   offeringDetails: OfferingDetails;
   status: TradeStatus;
 };
+
+export interface TradeContextType {
+  addTrade: (trade: Trade) => void;
+  trades: Trade[];
+}
