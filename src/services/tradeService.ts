@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Trade, TradeAction, TradeStatus } from '../types';
 
@@ -10,7 +11,7 @@ export const createTradeService = () => {
     return actions[index];
   };
 
-  const updateTradeStatus = (tradeId: number, status: TradeStatus): void => {
+  const updateTradeStatus = (tradeId: string, status: TradeStatus): void => {
     const trade = trades.find((t) => t.id === tradeId);
     if (trade) {
       trade.status = status;
@@ -53,11 +54,12 @@ export const createTradeService = () => {
     }, delay);
   };
 
-  const addTrade = (trade: Omit<Trade, 'id' | 'status'>): void => {
+  const addTrade = (trade: Trade): void => {
+    const { id, status, ...rest } = trade;
     const newTrade: Trade = {
-      id: Date.now(),
+      id: uuidv4(),
       status: 'pending',
-      ...trade,
+      ...rest,
     };
     trades.push(newTrade);
     tradesSubject.next([...trades]);
@@ -66,7 +68,7 @@ export const createTradeService = () => {
     simulateStatusUpdate(newTrade);
   };
 
-  const confirmTrade = (tradeId: number): void => {
+  const confirmTrade = (tradeId: string): void => {
     const trade = trades.find((t) => t.id === tradeId);
     if (trade && trade.status === 'awaiting confirmation') {
       updateTradeStatus(tradeId, 'completed');
