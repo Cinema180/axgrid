@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Chip } from '@mui/material';
 import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
 import { Trade } from '../types';
@@ -31,8 +31,40 @@ function TradeTable() {
     setSelectedTrade(trade); // Set the selected trade to show details
   };
 
-  const handleConfirmTrade = (tradeId: string) => {
+  const handleConfirmTrade = (tradeId: string, event?: React.MouseEvent) => {
+    if (event) {
+      event.stopPropagation(); // Prevent row click event when Confirm button is clicked
+    }
     tradeService.confirmTrade(tradeId);
+  };
+
+  // Render the status as a colored chip based on the trade's status
+  const renderStatusChip = (status: string) => {
+    let color: 'default' | 'success' | 'warning' | 'error' | 'info' = 'default';
+    switch (status) {
+      case 'completed':
+        color = 'success'; // Green for completed trades
+        break;
+      case 'pending':
+        color = 'info'; // Blue for pending trades
+        break;
+      case 'processing':
+        color = 'warning'; // Yellow for trades in progress
+        break;
+      case 'cancelled':
+        color = 'default'; // Gray for cancelled trades
+        break;
+      case 'rejected':
+      case 'failed':
+        color = 'error'; // Red for rejected or failed trades
+        break;
+      case 'awaiting confirmation':
+        color = 'warning'; // Orange for awaiting confirmation
+        break;
+      default:
+        color = 'default'; // Default color for unknown statuses
+    }
+    return <Chip label={status} color={color} />;
   };
 
   const columns: GridColDef[] = [
@@ -46,7 +78,15 @@ function TradeTable() {
         return trade.offeringDetails?.energySource || '';
       },
     },
-    { field: 'status', headerName: 'Status', width: 200 },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 200,
+      renderCell: (params) => {
+        const trade = params.row as Trade;
+        return renderStatusChip(trade.status);
+      },
+    },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -57,9 +97,9 @@ function TradeTable() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => handleConfirmTrade(trade.id)}
+            onClick={(event) => handleConfirmTrade(trade.id, event)} // Pass the event to prevent row click
           >
-            Trade
+            Confirm Trade
           </Button>
         ) : (
           'None'
@@ -71,7 +111,7 @@ function TradeTable() {
   return (
     <Box p={2}>
       <Typography variant="h5" gutterBottom>
-        Trades
+        Manage Trades
       </Typography>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
@@ -81,7 +121,7 @@ function TradeTable() {
           onPaginationModelChange={(model) => setPaginationModel(model)}
           pageSizeOptions={[5, 10, 20]}
           onRowClick={handleRowClick} // Open detail dialog on row click
-          isRowSelectable={() => false} // Disable row selection
+          isRowSelectable={() => false} // Disable row selection, per your original code
         />
       </div>
 
