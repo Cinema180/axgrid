@@ -56,15 +56,14 @@ export const createTradeService = () => {
     }, delay);
   };
 
-  // TODO - Fix the addTrade function
   const addTrade = (offeringDetails: OfferingDetails): void => {
-    const currentTrades = tradesSubject.getValue();
     const newTrade: Trade = {
       id: uuidv4(),
       status: 'pending',
       offeringDetails,
     };
-    trades.push(newTrade);
+    const currentTrades = tradesSubject.getValue();
+    currentTrades.push(newTrade);
     tradesSubject.next([...currentTrades]);
 
     // Start simulating status updates with random actions
