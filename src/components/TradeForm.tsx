@@ -29,7 +29,7 @@ function TradeForm() {
 
   const handleSubmit = () => {
     const offeringDetails: OfferingDetails = {
-      energySource, // Set energy source
+      energySource,
       price: Number(formData.price),
       minPurchaseQuantity: Number(formData.minPurchaseQuantity),
       contractTerms: formData.contractTerms as string,
@@ -47,22 +47,24 @@ function TradeForm() {
 
   // Dynamic input field renderer
   const renderFields = () =>
-    fields.map((field: FormField) => (
-      <TextField
-        key={field.name}
-        label={field.label}
-        type={field.type}
-        value={formData[field.name]?.toString() || ''}
-        required={field.required || false}
-        onChange={(e) => {
-          const value =
-            field.type === 'number' ? +e.target.value : e.target.value;
-          setFormData({ ...formData, [field.name]: value });
-        }}
-        fullWidth
-        margin="normal"
-      />
-    ));
+    fields
+      .filter((field: FormField) => field.name !== 'energySource') // Exclude energySource from being rendered
+      .map((field: FormField) => (
+        <TextField
+          key={field.name}
+          label={field.label}
+          type={field.type}
+          value={formData[field.name]?.toString() || ''}
+          required={field.required || false}
+          onChange={(e) => {
+            const value =
+              field.type === 'number' ? +e.target.value : e.target.value;
+            setFormData({ ...formData, [field.name]: value });
+          }}
+          fullWidth
+          margin="normal"
+        />
+      ));
 
   return (
     <Box>
@@ -72,7 +74,7 @@ function TradeForm() {
         select
         label="Energy Source"
         value={energySource}
-        onChange={(e) => setEnergySource(e.target.value as EnergySource)} // Cast to EnergySource
+        onChange={(e) => setEnergySource(e.target.value as EnergySource)}
         SelectProps={{
           native: true,
         }}

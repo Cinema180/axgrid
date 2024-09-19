@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Button, Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
 import { Trade } from '../types';
+import TradeDetailDialog from './TradeDetailDialog';
 
 function TradeTable() {
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 5,
     page: 0,
@@ -23,6 +25,11 @@ function TradeTable() {
       subscription.unsubscribe();
     };
   }, []);
+
+  const handleRowClick = (params: any) => {
+    const trade = params.row as Trade;
+    setSelectedTrade(trade); // Set the selected trade to show details
+  };
 
   const handleConfirmTrade = (tradeId: string) => {
     tradeService.confirmTrade(tradeId);
@@ -73,10 +80,17 @@ function TradeTable() {
           paginationModel={paginationModel}
           onPaginationModelChange={(model) => setPaginationModel(model)}
           pageSizeOptions={[5, 10, 20]}
-          checkboxSelection={false}
-          isRowSelectable={() => false}
+          onRowClick={handleRowClick} // Open detail dialog on row click
+          isRowSelectable={() => false} // Disable row selection
         />
       </div>
+
+      {/* Show the detail dialog when a trade is selected */}
+      <TradeDetailDialog
+        trade={selectedTrade}
+        open={!!selectedTrade}
+        onClose={() => setSelectedTrade(null)}
+      />
     </Box>
   );
 }
