@@ -40,7 +40,8 @@ function TradeTable() {
 
   // Render the status as a colored chip based on the trade's status
   const renderStatusChip = (status: string) => {
-    let color: 'default' | 'success' | 'warning' | 'error' | 'info' = 'default';
+    let color: 'default' | 'success' | 'warning' | 'secondary' | 'error' | 'info' =
+      'default';
     switch (status) {
       case 'completed':
         color = 'success'; // Green for completed trades
@@ -49,7 +50,7 @@ function TradeTable() {
         color = 'info'; // Blue for pending trades
         break;
       case 'processing':
-        color = 'warning'; // Yellow for trades in progress
+        color = 'secondary'; // Purple for trades in progress
         break;
       case 'cancelled':
         color = 'default'; // Gray for cancelled trades
