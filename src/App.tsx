@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Subscription } from 'rxjs';
-import axpLogo from './resources/axgrid_logo_transparent_medium.png';
+import { Container, CssBaseline } from '@mui/material';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Trade } from './types';
 import { tradeService } from './services/tradeService';
 import TradeContext from './store/TradeContext';
+import Navigation from './components/Navigation';
 
 function App() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -25,15 +27,12 @@ function App() {
 
   return (
     <TradeContext.Provider value={trades}>
-      <div className="App">
-        <header className="App-header">
-          <img src={axpLogo} className="App-logo" alt="logo" />
-          <p>
-            Welcome to AxGrid, the most unpredictable yet exciting energy
-            trading platform.
-          </p>
-        </header>
-      </div>
+      <BrowserRouter>
+        <Container>
+          <CssBaseline />
+          <Navigation />
+        </Container>
+      </BrowserRouter>
     </TradeContext.Provider>
   );
 }

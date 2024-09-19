@@ -30,8 +30,15 @@ function TradeTable() {
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'Trade ID', width: 150 },
-    { field: 'energySource', headerName: 'Energy Source', width: 150 },
-    { field: 'amount', headerName: 'Amount (kWh)', width: 150 },
+    {
+      field: 'energySource',
+      headerName: 'Energy Source',
+      width: 150,
+      renderCell: (params) => {
+        const trade = params.row as Trade;
+        return trade.offeringDetails?.energySource || '';
+      },
+    },
     { field: 'status', headerName: 'Status', width: 200 },
     {
       field: 'actions',
@@ -39,16 +46,16 @@ function TradeTable() {
       width: 200,
       renderCell: (params) => {
         const trade = params.row as Trade;
-        return (
-          trade.status === 'awaiting confirmation' && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleConfirmTrade(trade.id)}
-            >
-              Trade
-            </Button>
-          )
+        return trade.status === 'awaiting confirmation' ? (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleConfirmTrade(trade.id)}
+          >
+            Trade
+          </Button>
+        ) : (
+          'None'
         );
       },
     },
@@ -65,7 +72,9 @@ function TradeTable() {
           columns={columns}
           paginationModel={paginationModel}
           onPaginationModelChange={(model) => setPaginationModel(model)}
+          pageSizeOptions={[5, 10, 20]}
           checkboxSelection={false}
+          isRowSelectable={() => false}
         />
       </div>
     </Box>
