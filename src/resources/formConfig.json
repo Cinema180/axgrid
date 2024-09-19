@@ -1,0 +1,135 @@
+{
+  "solar": {
+    "fields": [
+      { "name": "capacity", "label": "Capacity (MW)", "type": "number" },
+      { "name": "location", "label": "Location", "type": "text" },
+      {
+        "name": "energyOutputPredictions",
+        "label": "Energy Output Predictions",
+        "type": "text"
+      },
+      {
+        "name": "timeOfAvailability",
+        "label": "Time of Availability",
+        "type": "text"
+      },
+      { "name": "certifications", "label": "Certifications", "type": "text" }
+    ]
+  },
+  "gas": {
+    "fields": [
+      { "name": "capacity", "label": "Capacity (MMBtu)", "type": "number" },
+      { "name": "deliveryMethod", "label": "Delivery Method", "type": "text" },
+      {
+        "name": "flexibilityOfSupply",
+        "label": "Flexibility of Supply",
+        "type": "text"
+      },
+      {
+        "name": "emissionCredits",
+        "label": "Emission Credits or Penalties",
+        "type": "text"
+      },
+      { "name": "contractLength", "label": "Contract Length", "type": "text" }
+    ]
+  },
+  "wind": {
+    "fields": [
+      { "name": "capacity", "label": "Capacity (MW)", "type": "number" },
+      { "name": "location", "label": "Location", "type": "text" },
+      {
+        "name": "windSpeedPredictions",
+        "label": "Wind Speed Predictions",
+        "type": "text"
+      },
+      {
+        "name": "turbineEfficiency",
+        "label": "Turbine Efficiency",
+        "type": "text"
+      },
+      {
+        "name": "timeOfAvailability",
+        "label": "Time of Availability",
+        "type": "text"
+      },
+      { "name": "certifications", "label": "Certifications", "type": "text" }
+    ]
+  },
+  "hydro": {
+    "fields": [
+      { "name": "capacity", "label": "Capacity (MW)", "type": "number" },
+      { "name": "waterFlowRate", "label": "Water Flow Rate", "type": "text" },
+      {
+        "name": "reservoirLevel",
+        "label": "Reservoir Level (Current/Historical)",
+        "type": "text"
+      },
+      {
+        "name": "regulatoryCompliance",
+        "label": "Regulatory Compliance",
+        "type": "text"
+      },
+      {
+        "name": "flexibilityOfSupply",
+        "label": "Flexibility of Supply",
+        "type": "text"
+      },
+      { "name": "energyStorage", "label": "Energy Storage", "type": "text" }
+    ]
+  },
+  "kinetic": {
+    "fields": [
+      { "name": "capacity", "label": "Capacity (MW)", "type": "number" },
+      { "name": "location", "label": "Location", "type": "text" },
+      {
+        "name": "energyConversionEfficiency",
+        "label": "Energy Conversion Efficiency",
+        "type": "text"
+      },
+      {
+        "name": "predictabilityOfSource",
+        "label": "Predictability of Source",
+        "type": "text"
+      }
+    ]
+  },
+  "thermal": {
+    "fields": [
+      { "name": "capacity", "label": "Capacity (MW)", "type": "number" },
+      {
+        "name": "heatSourceStability",
+        "label": "Heat Source Stability",
+        "type": "text"
+      },
+      {
+        "name": "temperatureGradient",
+        "label": "Temperature Gradient",
+        "type": "text"
+      },
+      {
+        "name": "conversionEfficiency",
+        "label": "Conversion Efficiency",
+        "type": "text"
+      },
+      { "name": "location", "label": "Location", "type": "text" },
+      {
+        "name": "environmentalImpact",
+        "label": "Environmental Impact and Regulation",
+        "type": "text"
+      }
+    ]
+  },
+  "commonFields": [
+    { "name": "contractTerms", "label": "Contract Terms", "type": "text" },
+    { "name": "currency", "label": "Currency", "type": "text" },
+    { "name": "energySource", "label": "Energy Source", "type": "select" },
+    { "name": "energyUnit", "label": "Energy Unit", "type": "text" },
+    {
+      "name": "minPurchaseQuantity",
+      "label": "Minimum Purchase Quantity",
+      "type": "number"
+    },
+    { "name": "paymentTerms", "label": "Payment Terms", "type": "text" },
+    { "name": "price", "label": "Price", "type": "number" }
+  ]
+}

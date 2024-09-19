@@ -4,7 +4,6 @@ import { Trade } from '../types';
 const initialTrades: Trade[] = [
   {
     id: uuidv4(),
-    amount: 100,
     status: 'pending',
     offeringDetails: {
       currency: 'CNY',
@@ -23,7 +22,6 @@ const initialTrades: Trade[] = [
   },
   {
     id: uuidv4(),
-    amount: 200,
     status: 'awaiting confirmation',
     offeringDetails: {
       currency: 'USD',
@@ -42,7 +40,6 @@ const initialTrades: Trade[] = [
   },
   {
     id: uuidv4(),
-    amount: 150,
     status: 'processing',
     offeringDetails: {
       currency: 'USD',

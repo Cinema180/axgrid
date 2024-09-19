@@ -6,11 +6,33 @@ export type EnergySource =
   | 'kinetic'
   | 'thermal';
 
+export interface EnergySourceConfig {
+  fields: FormField[];
+}
+
+export type FieldType = 'text' | 'number' | 'select'; // Extend this with other required field types like 'select', 'checkbox', etc.
+
+export interface FormField {
+  label: string;
+  name: string;
+  required?: boolean;
+  type: FieldType;
+}
+
+export interface FormConfig {
+  [energySource: string]: EnergySourceConfig | FormField[];
+  commonFields: FormField[];
+}
+
+export interface FormData {
+  [key: string]: string | number;
+}
+
 export type OfferingDetails = {
   [key: string]: string | number;
   contractTerms: string;
   currency: string;
-  energySource: EnergySource;
+  energySource: string;
   energyUnit: string;
   minPurchaseQuantity: number;
   paymentTerms: string;
@@ -35,8 +57,12 @@ export type TradeStatus =
   | 'awaiting confirmation';
 
 export type Trade = {
-  amount: number;
   id: string;
   offeringDetails: OfferingDetails;
   status: TradeStatus;
 };
+
+export interface TradeContextType {
+  addTrade: (trade: Trade) => void;
+  trades: Trade[];
+}

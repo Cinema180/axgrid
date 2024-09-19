@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Trade, TradeAction, TradeStatus } from '../types';
+import { OfferingDetails, Trade, TradeAction, TradeStatus } from '../types';
 
 export const createTradeService = () => {
   const trades: Trade[] = [];
@@ -54,12 +54,11 @@ export const createTradeService = () => {
     }, delay);
   };
 
-  const addTrade = (trade: Trade): void => {
-    const { id, status, ...rest } = trade;
+  const addTrade = (offeringDetails: OfferingDetails): void => {
     const newTrade: Trade = {
       id: uuidv4(),
       status: 'pending',
-      ...rest,
+      offeringDetails,
     };
     trades.push(newTrade);
     tradesSubject.next([...trades]);
