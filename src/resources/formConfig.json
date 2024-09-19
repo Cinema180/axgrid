@@ -120,13 +120,16 @@
     ]
   },
   "commonFields": [
-    { "name": "price", "label": "Price", "type": "number" },
+    { "name": "contractTerms", "label": "Contract Terms", "type": "text" },
+    { "name": "currency", "label": "Currency", "type": "text" },
+    { "name": "energySource", "label": "Energy Source", "type": "select" },
+    { "name": "energyUnit", "label": "Energy Unit", "type": "text" },
     {
       "name": "minPurchaseQuantity",
       "label": "Minimum Purchase Quantity",
       "type": "number"
     },
-    { "name": "contractTerms", "label": "Contract Terms", "type": "text" },
-    { "name": "paymentTerms", "label": "Payment Terms", "type": "text" }
+    { "name": "paymentTerms", "label": "Payment Terms", "type": "text" },
+    { "name": "price", "label": "Price", "type": "number" }
   ]
 }
