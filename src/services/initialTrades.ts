@@ -22,7 +22,7 @@ const initialTrades: Trade[] = [
   },
   {
     id: uuidv4(),
-    status: 'awaiting confirmation',
+    status: 'pending',
     offeringDetails: {
       currency: 'USD',
       energySource: 'gas',
@@ -40,7 +40,7 @@ const initialTrades: Trade[] = [
   },
   {
     id: uuidv4(),
-    status: 'processing',
+    status: 'pending',
     offeringDetails: {
       currency: 'USD',
       energySource: 'wind',
