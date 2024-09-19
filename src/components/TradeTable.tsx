@@ -35,7 +35,7 @@ function TradeTable() {
       headerName: 'Energy Source',
       width: 150,
       renderCell: (params) => {
-        const trade = params.row as Trade; // Explicitly cast to Trade
+        const trade = params.row as Trade;
         return trade.offeringDetails?.energySource || '';
       },
     },
@@ -46,16 +46,16 @@ function TradeTable() {
       width: 200,
       renderCell: (params) => {
         const trade = params.row as Trade;
-        return (
-          trade.status === 'awaiting confirmation' && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleConfirmTrade(trade.id)}
-            >
-              Trade
-            </Button>
-          )
+        return trade.status === 'awaiting confirmation' ? (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleConfirmTrade(trade.id)}
+          >
+            Trade
+          </Button>
+        ) : (
+          'None'
         );
       },
     },
