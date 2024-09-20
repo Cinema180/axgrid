@@ -6,36 +6,7 @@ import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
 import { Trade } from '../types';
 import TradeDetailDialog from './TradeDetailDialog';
-
-// Define the flash animation for awaiting confirmation trades
-const flash = keyframes`
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-`;
-
-// Styled Chip component with conditional animations based on status
-const StatusChip = styled(Chip)(({ status }: { status: string }) => ({
-  ...(status === 'awaiting confirmation' && {
-    animation: `${flash} 1.5s ease-in-out infinite`, // Flashing effect for awaiting confirmation status
-  }),
-  color: '#fff', // Text color for all chips
-  fontWeight: 'bold', // Bold text
-  backgroundColor:
-    status === 'completed'
-      ? '#4caf50' // Green for completed
-      : status === 'pending'
-      ? '#2196f3' // Blue for pending
-      : status === 'processing'
-      ? '#ff9800' // Yellow for processing
-      : status === 'cancelled'
-      ? '#9e9e9e' // Gray for cancelled
-      : status === 'rejected' || status === 'failed'
-      ? '#f44336' // Red for rejected or failed
-      : status === 'awaiting confirmation'
-      ? '#ff5722' // Orange for awaiting confirmation
-      : '#607d8b', // Default color for unknown statuses
-}));
+import StatusChip from './StatusChip';
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   '& .even-row': {
@@ -78,33 +49,6 @@ function TradeTable() {
     tradeService.confirmTrade(tradeId);
   };
 
-  // Render the status as a colored chip based on the trade's status
-  const renderStatusChip = (status: string) => {
-    return (
-      <StatusChip
-        label={
-          <>
-            {status}
-            {status === 'processing' && (
-              <CircularProgress
-                sx={{
-                  color: 'white',
-                  marginLeft: 0.5,
-                  position: 'relative',
-                  top: '1px',
-                }}
-                size={10}
-                thickness={7}
-              />
-            )}{' '}
-            {/* Swirly icon for processing */}
-          </>
-        }
-        status={status}
-      />
-    );
-  };
-
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'Trade ID', width: 150 },
     {
@@ -122,7 +66,7 @@ function TradeTable() {
       width: 200,
       renderCell: (params) => {
         const trade = params.row as Trade;
-        return renderStatusChip(trade.status);
+        return <StatusChip status={trade.status} />;
       },
     },
     {
