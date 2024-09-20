@@ -5,6 +5,16 @@ import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
 import { Trade } from '../types';
 import TradeDetailDialog from './TradeDetailDialog';
+import { styled } from '@mui/material/styles';
+
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  '& .even-row': {
+    backgroundColor: '#f9f9f9', // Light gray for even rows
+  },
+  '& .odd-row': {
+    backgroundColor: '#ffffff', // White for odd rows
+  },
+}));
 
 function TradeTable() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -115,14 +125,17 @@ function TradeTable() {
         Manage Trades
       </Typography>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid
+        <StyledDataGrid
           rows={trades}
           columns={columns}
           paginationModel={paginationModel}
           onPaginationModelChange={(model) => setPaginationModel(model)}
           pageSizeOptions={[5, 10, 20]}
           onRowClick={handleRowClick} // Open detail dialog on row click
-          isRowSelectable={() => false} // Disable row selection, per your original code
+          isRowSelectable={() => false}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
+          }
         />
       </div>
 
