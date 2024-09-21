@@ -16,7 +16,7 @@ import {
   EnergySource,
   EnergySourceConfig,
   OfferingDetails,
-} from '../types';
+} from '../types/types';
 
 function TradeForm() {
   const [formData, setFormData] = useState<FormData>({});

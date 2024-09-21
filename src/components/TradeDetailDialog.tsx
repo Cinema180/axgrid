@@ -13,9 +13,9 @@ import {
   Divider,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Trade } from '../types';
+import { Trade } from '../types/types';
 import formConfig from '../resources/formConfig.json';
-import { EnergySource } from '../types';
+import { EnergySource } from '../types/types';
 
 interface TradeDetailDialogProps {
   trade: Trade | null;

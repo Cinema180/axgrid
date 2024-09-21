@@ -4,7 +4,7 @@ import { Box, Typography, Button, Chip, CircularProgress } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
-import { Trade } from '../types';
+import { Trade } from '../types/types';
 import TradeDetailDialog from './TradeDetailDialog';
 import StatusChip from './StatusChip';
 

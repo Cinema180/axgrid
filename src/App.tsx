@@ -3,7 +3,7 @@ import './App.css';
 import { Subscription } from 'rxjs';
 import { Container, CssBaseline } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Trade } from './types';
+import { Trade } from './types/types';
 import { tradeService } from './services/tradeService';
 import TradeContext from './store/TradeContext';
 import Navigation from './components/Navigation';
