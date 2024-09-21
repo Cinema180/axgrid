@@ -55,9 +55,8 @@ function TradeTable() {
       field: 'energySource',
       headerName: 'Energy Source',
       width: 150,
-      renderCell: (params) => {
-        const trade = params.row as Trade;
-        return trade.offeringDetails?.energySource || '';
+      valueGetter: (value, trade) => {
+        return trade.offeringDetails.energySource;
       },
     },
     {
@@ -73,6 +72,8 @@ function TradeTable() {
       field: 'actions',
       headerName: 'Actions',
       width: 200,
+      sortable: false,
+      filterable: false,
       renderCell: (params) => {
         const trade = params.row as Trade;
         return trade.status === 'awaiting confirmation' ? (
