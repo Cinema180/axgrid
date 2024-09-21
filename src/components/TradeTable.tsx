@@ -7,6 +7,7 @@ import { tradeService } from '../services/tradeService';
 import { Trade } from '../types/types';
 import TradeDetailDialog from './TradeDetailDialog';
 import StatusChip from './StatusChip';
+import { capitalise } from '../utilities/stringFormatter';
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   '& .even-row': {
@@ -56,7 +57,7 @@ function TradeTable() {
       headerName: 'Energy Source',
       width: 150,
       valueGetter: (value, trade) => {
-        return trade.offeringDetails.energySource;
+        return capitalise(trade.offeringDetails.energySource);
       },
     },
     {
