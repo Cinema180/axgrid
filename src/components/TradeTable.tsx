@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Typography, Button, Chip, CircularProgress } from '@mui/material';
-import { styled, keyframes } from '@mui/material/styles';
+import { Box, Typography, Button, Tooltip } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
 import { Trade } from '../types/types';
@@ -38,15 +38,11 @@ function TradeTable() {
     };
   }, []);
 
-  const handleRowClick = (params: any) => {
-    const trade = params.row as Trade;
-    setSelectedTrade(trade); // Set the selected trade to show details
+  const handleViewDetails = (trade: Trade) => {
+    setSelectedTrade(trade);
   };
 
-  const handleConfirmTrade = (tradeId: string, event?: React.MouseEvent) => {
-    if (event) {
-      event.stopPropagation(); // Prevent row click event when Confirm button is clicked
-    }
+  const handleConfirmTrade = (tradeId: string) => {
     tradeService.confirmTrade(tradeId);
   };
 
@@ -77,16 +73,31 @@ function TradeTable() {
       filterable: false,
       renderCell: (params) => {
         const trade = params.row as Trade;
-        return trade.status === 'awaiting confirmation' ? (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={(event) => handleConfirmTrade(trade.id, event)} // Pass the event to prevent row click
-          >
-            Confirm Trade
-          </Button>
-        ) : (
-          'None'
+        return (
+          <Box display="flex" gap={1} alignItems="center" height="100%">
+            <Tooltip title="View this trade's details">
+              <Button
+                variant="text"
+                color="secondary"
+                size="small"
+                onClick={() => handleViewDetails(trade)}
+              >
+                View Details
+              </Button>
+            </Tooltip>
+            {trade.status === 'awaiting confirmation' && (
+              <Tooltip title="Confirm this trade">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => handleConfirmTrade(trade.id)}
+                >
+                  Trade
+                </Button>
+              </Tooltip>
+            )}
+          </Box>
         );
       },
     },
@@ -104,7 +115,6 @@ function TradeTable() {
           paginationModel={paginationModel}
           onPaginationModelChange={(model) => setPaginationModel(model)}
           pageSizeOptions={[5, 10, 20]}
-          onRowClick={handleRowClick} // Open detail dialog on row click
           isRowSelectable={() => false}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
