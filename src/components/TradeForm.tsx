@@ -17,12 +17,14 @@ import {
   EnergySourceConfig,
   OfferingDetails,
 } from '../types/types';
+import CustomDialog from './CustomDialog';
 
 function TradeForm() {
   const [formData, setFormData] = useState<FormData>({});
   const [commonFields, setCommonFields] = useState<FormField[]>([]);
   const [dynamicFields, setDynamicFields] = useState<FormField[]>([]);
   const [energySource, setEnergySource] = useState<EnergySource>('solar');
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
   // Load JSON form configuration
   const config: FormConfig = formConfig as FormConfig;
@@ -41,6 +43,10 @@ function TradeForm() {
   }, [energySource, config]);
 
   const handleSubmit = () => {
+    setConfirmDialogOpen(true); // Open confirmation dialog
+  };
+
+  const handleConfirmSubmit = () => {
     const offeringDetails: OfferingDetails = {
       energySource,
       price: Number(formData.price),
@@ -54,6 +60,7 @@ function TradeForm() {
 
     tradeService.addTrade(offeringDetails);
     setFormData({}); // Reset the form
+    setConfirmDialogOpen(false);
   };
 
   // Dynamic input field renderer
@@ -168,6 +175,27 @@ function TradeForm() {
           </Button>
         </Box>
       </Card>
+      
+      {/* Confirmation Dialog for Submit Trade */}
+      <CustomDialog
+        title="Confirm Trade Submission"
+        open={confirmDialogOpen}
+        onClose={() => setConfirmDialogOpen(false)}
+        actions={
+          <>
+            <Button onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
+            <Button
+              onClick={handleConfirmSubmit}
+              variant="contained"
+              color="primary"
+            >
+              OK
+            </Button>
+          </>
+        }
+      >
+        <Typography>Are you sure you want to submit this trade?</Typography>
+      </CustomDialog>
     </Box>
   );
 }

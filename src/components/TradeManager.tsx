@@ -8,6 +8,7 @@ import { Trade } from '../types/types';
 import TradeDetailDialog from './TradeDetailDialog';
 import StatusChip from './StatusChip';
 import { capitalise } from '../utilities/stringFormatter';
+import CustomDialog from './CustomDialog';
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   '& .even-row': {
@@ -21,6 +22,8 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
 function TradeManager() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false); // For confirmation dialog
+  const [tradeToConfirm, setTradeToConfirm] = useState<Trade | null>(null); // The trade to confirm
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 5,
     page: 0,
@@ -42,8 +45,14 @@ function TradeManager() {
     setSelectedTrade(trade);
   };
 
+  const handleConfirmTradeClick = (trade: Trade) => {
+    setTradeToConfirm(trade); // Set the trade to be confirmed
+    setConfirmDialogOpen(true); // Open the confirmation dialog
+  };
+
   const handleConfirmTrade = (tradeId: string) => {
     tradeService.confirmTrade(tradeId);
+    setConfirmDialogOpen(false);
   };
 
   const columns: GridColDef[] = [
@@ -91,7 +100,7 @@ function TradeManager() {
                   variant="contained"
                   color="primary"
                   size="small"
-                  onClick={() => handleConfirmTrade(trade.id)}
+                  onClick={() => handleConfirmTradeClick(trade)}
                 >
                   Trade
                 </Button>
@@ -122,12 +131,32 @@ function TradeManager() {
         />
       </div>
 
-      {/* Show the detail dialog when a trade is selected */}
+      {/* Show the detail dialog when a VIEW DETAILS button is clicked */}
       <TradeDetailDialog
         trade={selectedTrade}
         open={!!selectedTrade}
         onClose={() => setSelectedTrade(null)}
       />
+      {/* Show a confirmation dialog when a TRADE button is clicked */}
+      <CustomDialog
+        title="Confirm Trade"
+        open={confirmDialogOpen}
+        onClose={() => setConfirmDialogOpen(false)}
+        actions={
+          <>
+            <Button onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
+            <Button
+              onClick={() => handleConfirmTrade(tradeToConfirm?.id as string)}
+              variant="contained"
+              color="primary"
+            >
+              OK
+            </Button>
+          </>
+        }
+      >
+        <Typography>Are you sure you want to confirm this trade?</Typography>
+      </CustomDialog>
     </Box>
   );
 }
