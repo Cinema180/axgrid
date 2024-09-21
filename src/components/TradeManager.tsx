@@ -18,7 +18,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }));
 
-function TradeTable() {
+function TradeManager() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
   const [paginationModel, setPaginationModel] = useState({
@@ -132,4 +132,4 @@ function TradeTable() {
   );
 }
 
-export default TradeTable;
+export default TradeManager;
