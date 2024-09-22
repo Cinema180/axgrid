@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { OfferingDetails, Trade, TradeStatus } from '../types';
+import { OfferingDetails, Trade, TradeStatus } from '../types/types';
 import initialTrades from './initialTrades';
 
 export const createTradeService = () => {

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Trade } from '../types';
+import { Trade } from '../types/types';
 
 const initialTrades: Trade[] = [
   {
