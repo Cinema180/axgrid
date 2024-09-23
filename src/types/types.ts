@@ -17,6 +17,7 @@ export interface FormField {
   name: string;
   required?: boolean;
   type: FieldType;
+  options?: string[];
 }
 
 export interface FormConfig {
@@ -33,7 +34,6 @@ export type OfferingDetails = {
   contractTerms: string;
   currency: string;
   energySource: string;
-  energyUnit: string;
   minPurchaseQuantity: number;
   paymentTerms: string;
   price: number;

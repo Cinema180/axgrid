@@ -53,7 +53,6 @@ function TradeForm() {
       minPurchaseQuantity: Number(formData.minPurchaseQuantity),
       contractTerms: formData.contractTerms as string,
       currency: formData.currency as string,
-      energyUnit: formData.energyUnit as string,
       paymentTerms: formData.paymentTerms as string,
       ...formData, // Include any additional dynamic fields
     };
@@ -67,32 +66,71 @@ function TradeForm() {
   const renderFields = (fieldsToRender: FormField[]) =>
     fieldsToRender
       .filter((field) => field.name !== 'energySource') // Exclude energySource from being rendered
-      .map((field: FormField) => (
-        <Box
-          key={field.name}
-          sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}
-        >
-          <TextField
-            label={field.label}
-            type={field.type}
-            value={formData[field.name]?.toString() || ''}
-            required={field.required || false}
-            onChange={(e) => {
-              const value =
-                field.type === 'number' ? +e.target.value : e.target.value;
-              setFormData({ ...formData, [field.name]: value });
-            }}
-            fullWidth
-            margin="dense" // Used to reduce vertical spacing
-            size="small" // Set the size of the TextField to small
-            sx={{
-              '& .MuiInputBase-input': {
-                fontSize: '0.9rem',
-              },
-            }}
-          />
-        </Box>
-      ));
+      .map((field: FormField) => {
+        if (field.type === 'select') {
+          // Render select dropdown for select fields like currency
+          return (
+            <Box
+              key={field.name}
+              sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}
+            >
+              <TextField
+                select
+                label={field.label}
+                value={formData[field.name]}
+                required={field.required || false}
+                onChange={(e) =>
+                  setFormData({ ...formData, [field.name]: e.target.value })
+                }
+                SelectProps={{
+                  native: true,
+                }}
+                fullWidth
+                margin="dense"
+                size="small"
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: '0.9rem',
+                  },
+                }}
+              >
+                {field.options?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </TextField>
+            </Box>
+          );
+        }
+
+        return (
+          <Box
+            key={field.name}
+            sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}
+          >
+            <TextField
+              label={field.label}
+              type={field.type}
+              value={formData[field.name]?.toString() || ''}
+              required={field.required || false}
+              onChange={(e) => {
+                const value =
+                  field.type === 'number' ? +e.target.value : e.target.value;
+                setFormData({ ...formData, [field.name]: value });
+              }}
+              fullWidth
+              margin="dense"
+              size="small"
+              sx={{
+                '& .MuiInputBase-input': {
+                  fontSize: '0.9rem',
+                },
+              }}
+            />
+          </Box>
+        );
+      });
 
   const energySources: EnergySource[] = [
     'solar',
@@ -175,7 +213,7 @@ function TradeForm() {
           </Button>
         </Box>
       </Card>
-      
+
       {/* Confirmation Dialog for Submit Trade */}
       <CustomDialog
         title="Confirm Trade Submission"
