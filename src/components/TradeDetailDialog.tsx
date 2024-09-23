@@ -1,16 +1,12 @@
-import React from 'react';
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Box,
-  Typography,
-  Divider,
-} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Typography, Divider, Grid, Box } from '@mui/material';
+import { Subscription } from 'rxjs';
 import { Trade } from '../types/types';
 import formConfig from '../resources/formConfig.json';
 import { EnergySource } from '../types/types';
 import CustomDialog from './CustomDialog';
+import StatusChip from './StatusChip';
+import { tradeService } from '../services/tradeService';
 
 interface TradeDetailDialogProps {
   trade: Trade | null;
@@ -19,15 +15,41 @@ interface TradeDetailDialogProps {
 }
 
 function TradeDetailDialog(props: TradeDetailDialogProps) {
-  const { trade, open, onClose } = props;
+  const { trade: initialTrade, open, onClose } = props;
+  const [trade, setTrade] = useState<Trade | null>(initialTrade);
+
+  useEffect(() => {
+    if (initialTrade) {
+      const subscription: Subscription = tradeService
+        .getTrades()
+        .subscribe((updatedTrades) => {
+          const updatedTrade = updatedTrades.find(
+            (t) => t.id === initialTrade.id
+          );
+          if (updatedTrade) {
+            setTrade(updatedTrade); // Update the trade details in real-time
+          }
+        });
+
+      return () => subscription.unsubscribe();
+    }
+  }, [initialTrade]);
 
   if (!trade) return null;
 
-  // Helper function to get the label for a given field key
-  const getFieldLabel = (key: string, energySource: EnergySource): string => {
+  const getFieldLabel = (
+    key: string,
+    energySource: EnergySource,
+    offeringDetails: any
+  ): string => {
     const commonField = formConfig.commonFields.find(
       (field) => field.name === key
     );
+
+    if (key === 'price' && offeringDetails.currency) {
+      return `Price (${offeringDetails.currency})`;
+    }
+
     if (commonField) return commonField.label;
 
     const energyFields = formConfig[energySource]?.fields;
@@ -36,11 +58,9 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
       if (energyField) return energyField.label;
     }
 
-    // Fallback to using the key if no label is found
     return key;
   };
 
-  // Order and filter common fields as per formConfig.commonFields
   const commonFields = formConfig.commonFields.filter((field) =>
     Object.keys(trade.offeringDetails).includes(field.name)
   );
@@ -52,77 +72,61 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
   );
 
   return (
-    <CustomDialog
-      title={`Trade Details`}
-      open={open}
-      onClose={onClose}
-    >
-      <Typography variant="subtitle1" sx={{ mb: 1 }}>
-        General Information
-      </Typography>
-
-      {/* Render Common Fields in the order defined by formConfig.commonFields */}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
-          gap: 0.1,
-          alignItems: 'start', // Ensure alignment at the top for both columns
-        }}
-      >
-        <ListItem sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}>
-          <ListItemText primary="Trade ID" secondary={trade.id} />
-        </ListItem>
-        <ListItem sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}>
-          <ListItemText primary="Status" secondary={trade.status} />
-        </ListItem>
-        {commonFields.map((field) => (
-          <ListItem
-            key={field.name}
-            sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}
-          >
-            <ListItemText
-              primary={getFieldLabel(
-                field.name,
-                trade.offeringDetails.energySource as EnergySource
-              )}
-              secondary={trade.offeringDetails[field.name]?.toString()}
-              sx={{ whiteSpace: 'pre-wrap' }} // Ensures that overflow text wraps correctly
-            />
-          </ListItem>
-        ))}
+    <CustomDialog title={`Trade Details`} open={open} onClose={onClose}>
+      {/* General Information Section */}
+      <Box sx={{ mt: -1, p: 2, borderRadius: 1, bgcolor: 'background.paper' }}>
+        <Typography variant="h6" gutterBottom>
+          General Information
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body2">Trade ID</Typography>
+            <Typography variant="body1">{trade.id}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body2">Status</Typography>
+            <StatusChip status={trade.status} />
+          </Grid>
+          {commonFields.map((field) => (
+            <Grid item xs={12} sm={6} key={field.name}>
+              <Typography variant="body2">
+                {getFieldLabel(
+                  field.name,
+                  trade.offeringDetails.energySource as EnergySource,
+                  trade.offeringDetails
+                )}
+              </Typography>
+              <Typography variant="body1">
+                {trade.offeringDetails[field.name]?.toString()}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
 
-      <Divider sx={{ my: 2 }} />
+      <Divider />
 
-      <Typography variant="subtitle1" sx={{ mb: 1 }}>
-        Energy Source-Specific Information
-      </Typography>
-
-      {/* Render Source-Specific Fields */}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
-          gap: 0.1,
-          alignItems: 'start', // Ensure alignment at the top for both columns
-        }}
-      >
-        {dynamicFields?.map((field) => (
-          <ListItem
-            key={field.name}
-            sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}
-          >
-            <ListItemText
-              primary={getFieldLabel(
-                field.name,
-                trade.offeringDetails.energySource as EnergySource
-              )}
-              secondary={trade.offeringDetails[field.name]?.toString()}
-              sx={{ whiteSpace: 'pre-wrap' }} // Ensures that overflow text wraps correctly
-            />
-          </ListItem>
-        ))}
+      {/* Energy Source-Specific Information */}
+      <Box sx={{ p: 2, borderRadius: 1, bgcolor: 'background.paper' }}>
+        <Typography variant="h6" gutterBottom>
+          Energy Source-Specific Information
+        </Typography>
+        <Grid container spacing={2}>
+          {dynamicFields?.map((field) => (
+            <Grid item xs={12} sm={6} key={field.name}>
+              <Typography variant="body2">
+                {getFieldLabel(
+                  field.name,
+                  trade.offeringDetails.energySource as EnergySource,
+                  trade.offeringDetails
+                )}
+              </Typography>
+              <Typography variant="body1">
+                {trade.offeringDetails[field.name]?.toString()}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
     </CustomDialog>
   );
