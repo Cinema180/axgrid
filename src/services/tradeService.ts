@@ -1,11 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, fromEvent, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { OfferingDetails, Trade, TradeStatus } from '../types/types';
 import initialTrades from './initialTrades';
 
+// WebSocket URL (replace with actual WebSocket endpoint or use a mock)
+const WS_URL = 'wss://your-websocket-server-url';
+
 export const createTradeService = () => {
   const tradesSubject = new BehaviorSubject<Trade[]>(initialTrades);
+  const socket = new WebSocket(WS_URL);
 
+  // Function to update trade status
   const updateTradeStatus = (tradeId: string, status: TradeStatus): void => {
     const currentTrades = tradesSubject.getValue();
     const trade = currentTrades.find((t) => t.id === tradeId);
@@ -15,7 +21,25 @@ export const createTradeService = () => {
     }
   };
 
-  // Function to progress trade statuses in a logical order
+  // WebSocket message stream
+  const socketObservable = fromEvent<MessageEvent>(socket, 'message').pipe(
+    map((event: MessageEvent) => {
+      const updatedTrade = JSON.parse(event.data) as Trade;
+      const currentTrades = tradesSubject.getValue();
+      const tradeIndex = currentTrades.findIndex(
+        (t) => t.id === updatedTrade.id
+      );
+      if (tradeIndex !== -1) {
+        currentTrades[tradeIndex] = updatedTrade;
+      } else {
+        currentTrades.push(updatedTrade);
+      }
+      tradesSubject.next([...currentTrades]);
+      return [...currentTrades];
+    })
+  );
+
+  // Function to progress trade statuses
   const simulateTradeStatusProgression = (trade: Trade): void => {
     // Handle 'pending' status
     if (trade.status === 'pending') {
@@ -45,21 +69,18 @@ export const createTradeService = () => {
     }
   };
 
-  // Progress the status of all trades in their logical order
+  // Progress all trades in their logical order
   const updateAllTradeStatuses = (): void => {
     const currentTrades = tradesSubject.getValue();
-    const updatedTrades = currentTrades.map((trade) => {
-      simulateTradeStatusProgression(trade);
-      return trade;
-    });
-    tradesSubject.next([...updatedTrades]);
+    currentTrades.forEach(simulateTradeStatusProgression);
+    tradesSubject.next([...currentTrades]);
   };
 
-  // Start the interval to update trades progressively
   setInterval(() => {
     updateAllTradeStatuses();
-  }, 10000); // Updates every 10 seconds
+  }, 10000); // Update every 10 seconds
 
+  // Add a new trade
   const addTrade = (offeringDetails: OfferingDetails): void => {
     const newTrade: Trade = {
       id: uuidv4(),
@@ -70,9 +91,10 @@ export const createTradeService = () => {
     currentTrades.push(newTrade);
     tradesSubject.next([...currentTrades]);
 
-    // The trade will be automatically updated by the setInterval logic
+    // The trade will be updated by the WebSocket and RxJS streams
   };
 
+  // Confirm a trade
   const confirmTrade = (tradeId: string): void => {
     const currentTrades = tradesSubject.getValue();
     const trade = currentTrades.find((t) => t.id === tradeId);
@@ -81,7 +103,13 @@ export const createTradeService = () => {
     }
   };
 
-  const getTrades = (): Observable<Trade[]> => tradesSubject.asObservable();
+  // Merge WebSocket stream with existing RxJS trades stream
+  const getTrades = (): Observable<Trade[]> =>
+    merge(tradesSubject.asObservable(), socketObservable).pipe(
+      map((trades: Trade | Trade[]) =>
+        Array.isArray(trades) ? trades : [trades]
+      )
+    );
 
   return {
     addTrade,
