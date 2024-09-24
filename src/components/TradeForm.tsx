@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   TextField,
   Button,
@@ -16,6 +16,7 @@ import {
   EnergySource,
   EnergySourceConfig,
   OfferingDetails,
+  energySources,
 } from '../types/types';
 import CustomDialog from './CustomDialog';
 
@@ -132,15 +133,6 @@ function TradeForm() {
         );
       });
 
-  const energySources: EnergySource[] = [
-    'solar',
-    'gas',
-    'wind',
-    'hydro',
-    'kinetic',
-    'thermal',
-  ];
-
   return (
     <Box p={2}>
       <Typography variant="h5" gutterBottom>
@@ -151,7 +143,6 @@ function TradeForm() {
         <Typography variant="h6" gutterBottom>
           General Information
         </Typography>
-        {/* Use Box with CSS Grid for layout */}
         <Box
           sx={{
             display: 'grid',
@@ -190,7 +181,9 @@ function TradeForm() {
           {/* Render Common Fields */}
           {renderFields(commonFields)}
         </Box>
-        <Divider sx={{ my: 2 }} /> {/* Adds a divider to separate sections */}
+
+        <Divider sx={{ my: 2 }} />
+
         {/* Dynamic Fields Section */}
         <Typography variant="h6" gutterBottom>
           Energy Source-Specific Information
@@ -200,7 +193,7 @@ function TradeForm() {
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
-            gap: 2, // Adjusts space between form fields
+            gap: 2,
           }}
         >
           {/* Render Dynamic Fields based on selected energy source */}

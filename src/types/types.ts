@@ -6,6 +6,15 @@ export type EnergySource =
   | 'kinetic'
   | 'thermal';
 
+export const energySources: EnergySource[] = [
+  'solar',
+  'gas',
+  'wind',
+  'hydro',
+  'kinetic',
+  'thermal',
+];
+  
 export interface EnergySourceConfig {
   fields: FormField[];
 }
