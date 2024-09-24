@@ -108,7 +108,7 @@ function TradeManager() {
       <Typography variant="h5" gutterBottom>
         Manage Trades
       </Typography>
-      <div style={{ height: 400, width: '100%' }}>
+      <Box sx={{ height: 400, width: '100%' }}>
         <StyledDataGrid
           rows={trades}
           columns={columns}
@@ -120,7 +120,7 @@ function TradeManager() {
             params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
           }
         />
-      </div>
+      </Box>
 
       {/* Show the detail dialog when a VIEW DETAILS button is clicked */}
       <TradeDetailDialog
