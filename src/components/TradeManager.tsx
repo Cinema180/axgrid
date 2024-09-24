@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { GridColDef } from '@mui/x-data-grid';
 import { Box, Typography, Button, Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
 import { Trade } from '../types/types';
@@ -9,21 +8,13 @@ import TradeDetailDialog from './TradeDetailDialog';
 import StatusChip from './StatusChip';
 import { capitalise } from '../utilities/stringFormatter';
 import CustomDialog from './CustomDialog';
-
-const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
-  '& .even-row': {
-    backgroundColor: '#f9f9f9', // Light gray for even rows
-  },
-  '& .odd-row': {
-    backgroundColor: '#ffffff', // White for odd rows
-  },
-}));
+import { StyledDataGrid } from './StyledComponents';
 
 function TradeManager() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false); // For confirmation dialog
-  const [tradeToConfirm, setTradeToConfirm] = useState<Trade | null>(null); // The trade to confirm
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [tradeToConfirm, setTradeToConfirm] = useState<Trade | null>(null);
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 5,
     page: 0,
@@ -46,8 +37,8 @@ function TradeManager() {
   };
 
   const handleConfirmTradeClick = (trade: Trade) => {
-    setTradeToConfirm(trade); // Set the trade to be confirmed
-    setConfirmDialogOpen(true); // Open the confirmation dialog
+    setTradeToConfirm(trade);
+    setConfirmDialogOpen(true);
   };
 
   const handleConfirmTrade = (tradeId: string) => {
