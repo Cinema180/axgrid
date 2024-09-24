@@ -1,5 +1,4 @@
-import { CircularProgress } from '@mui/material';
-import { StyledChip } from './StyledComponents';
+import { StyledChip, StyledCircularProgress } from './StyledComponents';
 
 function StatusChip({ status }: { status: string }) {
   return (
@@ -7,18 +6,7 @@ function StatusChip({ status }: { status: string }) {
       label={
         <>
           {status}
-          {status === 'processing' && (
-            <CircularProgress
-              sx={{
-                color: 'white',
-                marginLeft: 0.5,
-                position: 'relative',
-                top: '1px',
-              }}
-              size={10}
-              thickness={7}
-            />
-          )}
+          {status === 'processing' && <StyledCircularProgress />}
         </>
       }
       status={status}

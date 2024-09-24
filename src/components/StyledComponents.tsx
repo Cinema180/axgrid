@@ -4,6 +4,7 @@ import {
   DialogContent as MuiDialogContent,
   DialogActions as MuiDialogActions,
   Chip,
+  CircularProgress,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -37,7 +38,7 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }));
 
-// The flashing animation for the 'awaiting confirmation' status StyledChip
+// Define the flash animation for awaiting confirmation trades
 const flash = keyframes`
   0% { opacity: 1; }
   50% { opacity: 0.5; }
@@ -65,4 +66,14 @@ export const StyledChip = styled(Chip)(({ status }: { status: string }) => ({
               : status === 'awaiting confirmation'
                 ? '#ff5722' // Orange for awaiting confirmation
                 : '#607d8b', // Default color for unknown statuses
+}));
+
+// Styled CircularProgress component
+export const StyledCircularProgress = styled((props) => (
+  <CircularProgress {...props} size={10} thickness={7} />
+))(({ theme }) => ({
+  color: 'white',
+  marginLeft: theme.spacing(0.5),
+  position: 'relative',
+  top: '1px',
 }));
