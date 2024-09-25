@@ -25,10 +25,10 @@ function Navigation() {
   };
 
   return (
-    <div>
+    <Box>
       <Box display="flex" alignItems="center">
         <Avatar
-          alt="Platform Logo"
+          alt="AxGrid Logo"
           src={logo}
           sx={{ width: 256, height: 67, borderRadius: 2 }}
         />
@@ -40,7 +40,7 @@ function Navigation() {
         <Tab label="Trade Manager" />
         <Tab label="New Trade" />
       </Tabs>
-    </div>
+    </Box>
   );
 }
 

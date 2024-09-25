@@ -1,15 +1,11 @@
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Box,
-  Button,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Dialog, Button, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import {
+  StyledDialogTitle,
+  StyledDialogContent,
+  StyledDialogActions,
+} from './StyledComponents';
 
 interface CustomDialogProps {
   title: string;
@@ -28,27 +24,14 @@ function CustomDialog({
 }: CustomDialogProps) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      {/* Shaded Header */}
-      <DialogTitle
-        sx={{
-          backgroundColor: '#f0f0f0',
-          padding: '8px 16px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      <StyledDialogTitle>
         <Typography variant="h6">{title}</Typography>
         <IconButton size="small" onClick={onClose}>
           <CloseIcon />
         </IconButton>
-      </DialogTitle>
-
-      {/* Main Content */}
-      <DialogContent sx={{ padding: 2 }}>{children}</DialogContent>
-
-      {/* Shaded Footer */}
-      <DialogActions sx={{ backgroundColor: '#f0f0f0', padding: '8px 16px' }}>
+      </StyledDialogTitle>
+      <StyledDialogContent>{children}</StyledDialogContent>
+      <StyledDialogActions>
         {actions || (
           <Button
             onClick={onClose}
@@ -59,7 +42,7 @@ function CustomDialog({
             Close
           </Button>
         )}
-      </DialogActions>
+      </StyledDialogActions>
     </Dialog>
   );
 }

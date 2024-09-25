@@ -6,6 +6,15 @@ export type EnergySource =
   | 'kinetic'
   | 'thermal';
 
+export const energySources: EnergySource[] = [
+  'solar',
+  'gas',
+  'wind',
+  'hydro',
+  'kinetic',
+  'thermal',
+];
+  
 export interface EnergySourceConfig {
   fields: FormField[];
 }
@@ -17,6 +26,7 @@ export interface FormField {
   name: string;
   required?: boolean;
   type: FieldType;
+  options?: string[];
 }
 
 export interface FormConfig {
@@ -33,7 +43,6 @@ export type OfferingDetails = {
   contractTerms: string;
   currency: string;
   energySource: string;
-  energyUnit: string;
   minPurchaseQuantity: number;
   paymentTerms: string;
   price: number;

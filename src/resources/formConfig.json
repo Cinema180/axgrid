@@ -121,9 +121,13 @@
   },
   "commonFields": [
     { "name": "contractTerms", "label": "Contract Terms", "type": "text" },
-    { "name": "currency", "label": "Currency", "type": "text" },
+    {
+      "name": "currency",
+      "label": "Currency",
+      "type": "select",
+      "options": ["AUD", "CNY", "EUR", "GBP", "JPY", "USD"]
+    },
     { "name": "energySource", "label": "Energy Source", "type": "select" },
-    { "name": "energyUnit", "label": "Energy Unit", "type": "text" },
     {
       "name": "minPurchaseQuantity",
       "label": "Minimum Purchase Quantity",
