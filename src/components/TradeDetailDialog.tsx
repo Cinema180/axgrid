@@ -67,7 +67,7 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
   );
 
   const dynamicFields = formConfig[
-    trade.offeringDetails.energySource as EnergySource
+    trade.offeringDetails.energySource
   ]?.fields.filter((field) =>
     Object.keys(trade.offeringDetails).includes(field.name)
   );
@@ -93,7 +93,7 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
               <Typography variant="body2">
                 {getFieldLabel(
                   field.name,
-                  trade.offeringDetails.energySource as EnergySource,
+                  trade.offeringDetails.energySource,
                   trade.offeringDetails
                 )}
               </Typography>
@@ -118,7 +118,7 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
               <Typography variant="body2">
                 {getFieldLabel(
                   field.name,
-                  trade.offeringDetails.energySource as EnergySource,
+                  trade.offeringDetails.energySource,
                   trade.offeringDetails
                 )}
               </Typography>

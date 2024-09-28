@@ -24,9 +24,9 @@ export type FieldType = 'text' | 'number' | 'select'; // Extend this with other 
 export interface FormField {
   label: string;
   name: string;
+  options?: string[];
   required?: boolean;
   type: FieldType;
-  options?: string[];
 }
 
 export interface FormConfig {
@@ -42,7 +42,7 @@ export type OfferingDetails = {
   [key: string]: string | number;
   contractTerms: string;
   currency: string;
-  energySource: string;
+  energySource: EnergySource;
   minPurchaseQuantity: number;
   paymentTerms: string;
   price: number;
