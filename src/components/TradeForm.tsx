@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TextField,
   Button,
@@ -7,6 +7,8 @@ import {
   Card,
   Divider,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useTabContext } from '../store/TabContext';
 import { tradeService } from '../services/tradeService';
 import formConfig from '../resources/formConfig.json';
 import {
@@ -26,6 +28,8 @@ function TradeForm() {
   const [dynamicFields, setDynamicFields] = useState<FormField[]>([]);
   const [energySource, setEnergySource] = useState<EnergySource>('solar');
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const { setSelectedTab } = useTabContext();
+  const navigate = useNavigate();
 
   // Load JSON form configuration
   const config: FormConfig = formConfig as FormConfig;
@@ -61,6 +65,8 @@ function TradeForm() {
     tradeService.addTrade(offeringDetails);
     setFormData({}); // Reset the form
     setConfirmDialogOpen(false);
+    setSelectedTab(0); // Set the selected tab to "Trade Manager" after trade submission
+    navigate('/trade-manager'); // Redirect to the TradeManager page after trade submission
   };
 
   // Dynamic input field renderer
