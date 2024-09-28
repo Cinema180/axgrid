@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { Box, Typography, Button, Tooltip } from '@mui/material';
 import { Subscription } from 'rxjs';
@@ -52,9 +52,7 @@ function TradeManager() {
       field: 'energySource',
       headerName: 'Energy Source',
       width: 150,
-      valueGetter: (value, trade) => {
-        return capitalise(trade.offeringDetails.energySource);
-      },
+      valueGetter: (value, trade: Trade) => capitalise(trade.offeringDetails.energySource),
     },
     {
       field: 'status',

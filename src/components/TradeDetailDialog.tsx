@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Divider, Grid, Box } from '@mui/material';
 import { Subscription } from 'rxjs';
-import { Trade } from '../types/types';
+import { OfferingDetails, Trade } from '../types/types';
 import formConfig from '../resources/formConfig.json';
 import { EnergySource } from '../types/types';
 import CustomDialog from './CustomDialog';
@@ -9,9 +9,9 @@ import StatusChip from './StatusChip';
 import { tradeService } from '../services/tradeService';
 
 interface TradeDetailDialogProps {
-  trade: Trade | null;
-  open: boolean;
   onClose: () => void;
+  open: boolean;
+  trade: Trade | null;
 }
 
 function TradeDetailDialog(props: TradeDetailDialogProps) {
@@ -33,6 +33,7 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
 
       return () => subscription.unsubscribe();
     }
+    return undefined;
   }, [initialTrade]);
 
   if (!trade) return null;
@@ -40,7 +41,7 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
   const getFieldLabel = (
     key: string,
     energySource: EnergySource,
-    offeringDetails: any
+    offeringDetails: OfferingDetails
   ): string => {
     const commonField = formConfig.commonFields.find(
       (field) => field.name === key
@@ -72,7 +73,7 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
   );
 
   return (
-    <CustomDialog title={`Trade Details`} open={open} onClose={onClose}>
+    <CustomDialog title="Trade Details" open={open} onClose={onClose}>
       {/* General Information Section */}
       <Box sx={{ mt: -1, p: 2, borderRadius: 1, bgcolor: 'background.paper' }}>
         <Typography variant="h6" gutterBottom>
