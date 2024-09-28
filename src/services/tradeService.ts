@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { OfferingDetails, Trade, TradeStatus } from '../types/types';
 import initialTrades from './initialTrades';
+import { Trade, TradeStatus, OfferingDetails } from '../types/tradeTypes';
 
 export const createTradeService = () => {
   const tradesSubject = new BehaviorSubject<Trade[]>(initialTrades);
@@ -39,9 +39,9 @@ export const createTradeService = () => {
         updateTradeStatus(trade.id, 'failed'); // 5% chance to be 'failed'
       }
     }
-    // Handle 'awaiting confirmation' status - do nothing unless user confirms
+    // Handle 'awaiting confirmation' status
     else if (trade.status === 'awaiting confirmation') {
-      return; // Remain in 'awaiting confirmation' until user confirms the trade
+      // Remain in 'awaiting confirmation' until user confirms the trade
     }
   };
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Divider, Grid, Box } from '@mui/material';
 import { Subscription } from 'rxjs';
-import { OfferingDetails, Trade } from '../types/types';
 import formConfig from '../resources/formConfig.json';
-import { EnergySource } from '../types/types';
 import CustomDialog from './CustomDialog';
 import StatusChip from './StatusChip';
 import { tradeService } from '../services/tradeService';
+import { EnergySource } from '../types/commonTypes';
+import { Trade, OfferingDetails } from '../types/tradeTypes';
 
 interface TradeDetailDialogProps {
   onClose: () => void;

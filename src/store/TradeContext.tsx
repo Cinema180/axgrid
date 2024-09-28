@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Trade } from '../types/types';
+import { Trade } from '../types/tradeTypes';
 
 const TradeContext = createContext<Trade[] | undefined>(undefined);
 

@@ -3,12 +3,12 @@ import { GridColDef } from '@mui/x-data-grid';
 import { Box, Typography, Button, Tooltip } from '@mui/material';
 import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
-import { Trade } from '../types/types';
 import TradeDetailDialog from './TradeDetailDialog';
 import StatusChip from './StatusChip';
 import { capitalise } from '../utilities/stringFormatter';
 import CustomDialog from './CustomDialog';
 import { StyledDataGrid } from './StyledComponents';
+import { Trade } from '../types/tradeTypes';
 
 function TradeManager() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -52,7 +52,8 @@ function TradeManager() {
       field: 'energySource',
       headerName: 'Energy Source',
       width: 150,
-      valueGetter: (value, trade: Trade) => capitalise(trade.offeringDetails.energySource),
+      valueGetter: (value, trade: Trade) =>
+        capitalise(trade.offeringDetails.energySource),
     },
     {
       field: 'status',

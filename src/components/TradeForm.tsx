@@ -11,16 +11,15 @@ import { useNavigate } from 'react-router-dom';
 import { useTabContext } from '../store/TabContext';
 import { tradeService } from '../services/tradeService';
 import formConfig from '../resources/formConfig.json';
-import {
-  FormField,
-  FormData,
-  FormConfig,
-  EnergySource,
-  EnergySourceConfig,
-  OfferingDetails,
-  energySources,
-} from '../types/types';
 import CustomDialog from './CustomDialog';
+import { EnergySource, energySources } from '../types/commonTypes';
+import {
+  FormData,
+  FormField,
+  FormConfig,
+  EnergySourceConfig,
+} from '../types/formTypes';
+import { OfferingDetails } from '../types/tradeTypes';
 
 function TradeForm() {
   const [formData, setFormData] = useState<FormData>({});
