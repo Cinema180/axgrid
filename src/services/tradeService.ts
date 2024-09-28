@@ -69,8 +69,6 @@ export const createTradeService = () => {
     const currentTrades = tradesSubject.getValue();
     currentTrades.push(newTrade);
     tradesSubject.next([...currentTrades]);
-
-    // The trade will be automatically updated by the setInterval logic
   };
 
   const confirmTrade = (tradeId: string): void => {
