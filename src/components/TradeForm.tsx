@@ -44,7 +44,32 @@ function TradeForm() {
     if (energySourceConfig && Array.isArray(energySourceConfig.fields)) {
       setDynamicFields(energySourceConfig.fields);
     }
-  }, [energySource, config]);
+
+    // Initialize formData with default values
+    const initialFormData: FormData = { ...formData };
+    [...config.commonFields, ...(energySourceConfig?.fields || [])].forEach(
+      (field) => {
+        if (
+          field.name !== 'energySource' &&
+          initialFormData[field.name] === undefined
+        ) {
+          if (field.type === 'number') {
+            initialFormData[field.name] = 0; // Initialize number fields with 0
+          } else if (
+            field.type === 'select' &&
+            field.options &&
+            field.options.length > 0
+          ) {
+            const [firstOption] = field.options;
+            initialFormData[field.name] = firstOption; // Initialize select fields with the first option
+          } else {
+            initialFormData[field.name] = ''; // Initialize other fields with empty string
+          }
+        }
+      }
+    );
+    setFormData(initialFormData);
+  }, [energySource, config, formData]);
 
   const handleSubmit = () => {
     setConfirmDialogOpen(true); // Open confirmation dialog
@@ -60,7 +85,7 @@ function TradeForm() {
       paymentTerms: formData.paymentTerms as string,
       ...formData, // Include any additional dynamic fields
     };
-
+    console.log('Submitting trade:', offeringDetails);
     tradeService.addTrade(offeringDetails);
     setFormData({}); // Reset the form
     setConfirmDialogOpen(false);
