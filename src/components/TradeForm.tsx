@@ -20,7 +20,7 @@ import {
   EnergySourceConfig,
 } from '../types/formTypes';
 import { OfferingDetails } from '../types/tradeTypes';
-import renderFields from './TradeForm.helpers';
+import renderFields, { initialiseFormData } from './TradeForm.helpers';
 
 function TradeForm() {
   const [formData, setFormData] = useState<FormData>({});
@@ -46,28 +46,11 @@ function TradeForm() {
       setDynamicFields(energySourceConfig.fields);
     }
 
-    // Initialize formData with default values
-    const initialFormData: FormData = { ...formData };
-    [...config.commonFields, ...(energySourceConfig?.fields || [])].forEach(
-      (field) => {
-        if (
-          field.name !== 'energySource' &&
-          initialFormData[field.name] === undefined
-        ) {
-          if (field.type === 'number') {
-            initialFormData[field.name] = 0; // Initialize number fields with 0
-          } else if (
-            field.type === 'select' &&
-            field.options &&
-            field.options.length > 0
-          ) {
-            const [firstOption] = field.options;
-            initialFormData[field.name] = firstOption; // Initialize select fields with the first option
-          } else {
-            initialFormData[field.name] = ''; // Initialize other fields with empty string
-          }
-        }
-      }
+    // Initialise formData with default values
+    const initialFormData = initialiseFormData(
+      config.commonFields,
+      energySourceConfig?.fields || [],
+      formData
     );
     setFormData(initialFormData);
   }, [energySource, config, formData]);

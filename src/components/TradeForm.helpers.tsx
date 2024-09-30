@@ -8,14 +8,18 @@ interface RenderFieldsProps {
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
 }
 
-function renderFields({ fieldsToRender, formData, setFormData }: RenderFieldsProps) {
+function renderFields({
+  fieldsToRender,
+  formData,
+  setFormData,
+}: RenderFieldsProps) {
   return (
     <>
       {fieldsToRender
         .filter((field) => field.name !== 'energySource') // Exclude energySource from being rendered
         .map((field: FormField) => {
           if (field.type === 'select') {
-            // Render select dropdown for select fields like currency
+            // Render select dropdown for select type fields
             return (
               <Box
                 key={field.name}
@@ -82,4 +86,33 @@ function renderFields({ fieldsToRender, formData, setFormData }: RenderFieldsPro
   );
 }
 
+function initialiseFormData(
+  commonFields: FormField[],
+  dynamicFields: FormField[],
+  formData: FormData
+): FormData {
+  const initialFormData: FormData = { ...formData };
+  [...commonFields, ...dynamicFields].forEach((field) => {
+    if (
+      field.name !== 'energySource' &&
+      initialFormData[field.name] === undefined
+    ) {
+      if (field.type === 'number') {
+        initialFormData[field.name] = 0; // Initialise number fields with 0
+      } else if (
+        field.type === 'select' &&
+        field.options &&
+        field.options.length > 0
+      ) {
+        const [firstOption] = field.options;
+        initialFormData[field.name] = firstOption; // Initialise select fields with the first option
+      } else {
+        initialFormData[field.name] = ''; // Initialise other fields with empty string
+      }
+    }
+  });
+  return initialFormData;
+}
+
 export default renderFields;
+export { initialiseFormData };
