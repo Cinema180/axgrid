@@ -36,7 +36,7 @@ interface InformationSectionProps {
   trade: Trade;
 }
 
-function GeneralInformationSection({ trade, fields }: InformationSectionProps) {
+export function GeneralInformationSection({ trade, fields }: InformationSectionProps) {
   return (
     <Box sx={{ mt: -1, p: 2, borderRadius: 1, bgcolor: 'background.paper' }}>
       <Typography variant="h6" gutterBottom>
@@ -70,7 +70,7 @@ function GeneralInformationSection({ trade, fields }: InformationSectionProps) {
   );
 }
 
-function EnergySourceSpecificInformationSection({
+export function EnergySourceSpecificInformationSection({
   trade,
   fields,
 }: InformationSectionProps) {
@@ -98,6 +98,3 @@ function EnergySourceSpecificInformationSection({
     </Box>
   );
 }
-
-export default getFieldLabel;
-export { GeneralInformationSection, EnergySourceSpecificInformationSection };
