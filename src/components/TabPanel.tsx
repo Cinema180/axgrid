@@ -7,7 +7,7 @@ interface TabPanelProps {
   value: number;
 }
 
-function TabPanel({ children = null, value, index }: TabPanelProps) {
+function TabPanel({ children, value, index }: TabPanelProps) {
   return (
     <div
       role="tabpanel"
@@ -19,5 +19,9 @@ function TabPanel({ children = null, value, index }: TabPanelProps) {
     </div>
   );
 }
+
+TabPanel.defaultProps = {
+  children: null,
+};
 
 export default TabPanel;

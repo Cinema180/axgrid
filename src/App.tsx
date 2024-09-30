@@ -3,12 +3,13 @@ import './App.css';
 import { Subscription } from 'rxjs';
 import { Container, CssBaseline } from '@mui/material';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Trade } from './types/types';
 import { tradeService } from './services/tradeService';
 import TradeContext from './store/TradeContext';
 import Navigation from './components/Navigation';
 import TradeManager from './components/TradeManager';
 import TradeForm from './components/TradeForm';
+import { TabProvider } from './store/TabContext';
+import { Trade } from './types/tradeTypes';
 
 function App() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -28,19 +29,21 @@ function App() {
   }, []);
 
   return (
-    <TradeContext.Provider value={trades}>
-      <BrowserRouter>
-        <Container>
-          <CssBaseline />
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<Navigate to="/trade-manager" />} />
-            <Route path="/trade-manager" element={<TradeManager />} />
-            <Route path="/new-trade" element={<TradeForm />} />
-          </Routes>
-        </Container>
-      </BrowserRouter>
-    </TradeContext.Provider>
+    <TabProvider>
+      <TradeContext.Provider value={trades}>
+        <BrowserRouter>
+          <Container>
+            <CssBaseline />
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<Navigate to="/trade-manager" />} />
+              <Route path="/trade-manager" element={<TradeManager />} />
+              <Route path="/new-trade" element={<TradeForm />} />
+            </Routes>
+          </Container>
+        </BrowserRouter>
+      </TradeContext.Provider>
+    </TabProvider>
   );
 }
 

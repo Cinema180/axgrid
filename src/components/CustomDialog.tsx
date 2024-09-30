@@ -8,11 +8,11 @@ import {
 } from './StyledComponents';
 
 interface CustomDialogProps {
-  title: string;
-  open: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
   actions?: React.ReactNode;
+  children: React.ReactNode;
+  onClose: () => void;
+  open: boolean;
+  title: string;
 }
 
 function CustomDialog({
@@ -46,5 +46,9 @@ function CustomDialog({
     </Dialog>
   );
 }
+
+CustomDialog.defaultProps = {
+  actions: null,
+};
 
 export default CustomDialog;

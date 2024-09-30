@@ -1,3 +1,4 @@
+import React from 'react';
 import { StyledChip, StyledCircularProgress } from './StyledComponents';
 
 function StatusChip({ status }: { status: string }) {
