@@ -5,8 +5,8 @@ import formConfig from '../resources/formConfig.json';
 import CustomDialog from './CustomDialog';
 import StatusChip from './StatusChip';
 import { tradeService } from '../services/tradeService';
-import { EnergySource } from '../types/commonTypes';
-import { Trade, OfferingDetails } from '../types/tradeTypes';
+import { Trade } from '../types/tradeTypes';
+import getFieldLabel from './TradeDetailDialog.helpers';
 
 interface TradeDetailDialogProps {
   onClose: () => void;
@@ -37,30 +37,6 @@ function TradeDetailDialog(props: TradeDetailDialogProps) {
   }, [initialTrade]);
 
   if (!trade) return null;
-
-  const getFieldLabel = (
-    key: string,
-    energySource: EnergySource,
-    offeringDetails: OfferingDetails
-  ): string => {
-    const commonField = formConfig.commonFields.find(
-      (field) => field.name === key
-    );
-
-    if (key === 'price' && offeringDetails.currency) {
-      return `Price (${offeringDetails.currency})`;
-    }
-
-    if (commonField) return commonField.label;
-
-    const energyFields = formConfig[energySource]?.fields;
-    if (energyFields) {
-      const energyField = energyFields.find((field) => field.name === key);
-      if (energyField) return energyField.label;
-    }
-
-    return key;
-  };
 
   const commonFields = formConfig.commonFields.filter((field) =>
     Object.keys(trade.offeringDetails).includes(field.name)
