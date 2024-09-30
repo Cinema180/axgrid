@@ -1,21 +1,18 @@
 import React from 'react';
-import { TextField, Box } from '@mui/material';
-import { FormField, FormData } from '../types/formTypes';
+import { TextField, Box, Typography } from '@mui/material';
+import { FormData, FormField } from '../types/formTypes';
+import { EnergySource } from '../types/commonTypes';
 
 interface RenderFieldsProps {
-  fieldsToRender: FormField[];
+  fields: FormField[];
   formData: FormData;
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+  setFormData: (formData: FormData) => void;
 }
 
-function renderFields({
-  fieldsToRender,
-  formData,
-  setFormData,
-}: RenderFieldsProps) {
+function renderFields({ fields, formData, setFormData }: RenderFieldsProps) {
   return (
     <>
-      {fieldsToRender
+      {fields
         .filter((field) => field.name !== 'energySource') // Exclude energySource from being rendered
         .map((field: FormField) => {
           if (field.type === 'select') {
@@ -86,7 +83,7 @@ function renderFields({
   );
 }
 
-function initialiseFormData(
+export function initialiseFormData(
   commonFields: FormField[],
   dynamicFields: FormField[],
   formData: FormData
@@ -114,5 +111,101 @@ function initialiseFormData(
   return initialFormData;
 }
 
-export default renderFields;
-export { initialiseFormData };
+interface InformationSectionProps {
+  fields: FormField[];
+  formData: FormData;
+  setFormData: (formData: FormData) => void;
+}
+
+interface GeneralInformationSectionProps extends InformationSectionProps {
+  energySource: EnergySource;
+  energySources: EnergySource[];
+  setEnergySource: (energySource: EnergySource) => void;
+}
+
+export function GeneralInformationSection({
+  energySource,
+  setEnergySource,
+  energySources,
+  fields,
+  formData,
+  setFormData,
+}: GeneralInformationSectionProps) {
+  return (
+    <>
+      <Typography variant="h6" gutterBottom>
+        General Information
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
+          gap: 2,
+        }}
+      >
+        {/* Dropdown for selecting energy source */}
+        <Box sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}>
+          <TextField
+            select
+            label="Energy Source"
+            value={energySource}
+            onChange={(e) => setEnergySource(e.target.value as EnergySource)}
+            SelectProps={{
+              native: true,
+            }}
+            fullWidth
+            margin="dense"
+            size="small"
+            sx={{
+              '& .MuiInputBase-input': {
+                fontSize: '0.9rem',
+              },
+            }}
+          >
+            {/* Map over the energySources array to create options */}
+            {energySources.map((source) => (
+              <option key={source} value={source}>
+                {source.charAt(0).toUpperCase() + source.slice(1)}
+              </option>
+            ))}
+          </TextField>
+        </Box>
+
+        {/* Render the general information (common) fields */}
+        {renderFields({
+          fields,
+          formData,
+          setFormData,
+        })}
+      </Box>
+    </>
+  );
+}
+
+export function EnergySourceSpecificInformationSection({
+  fields,
+  formData,
+  setFormData,
+}: InformationSectionProps) {
+  return (
+    <>
+      <Typography variant="h6" gutterBottom>
+        Energy Source-Specific Information
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
+          gap: 2,
+        }}
+      >
+        {/* Render the energy source-specific information (dynamic) fields */}
+        {renderFields({
+          fields,
+          formData,
+          setFormData,
+        })}
+      </Box>
+    </>
+  );
+}

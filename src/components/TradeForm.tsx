@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Card,
-  Divider,
-} from '@mui/material';
+import { Button, Box, Typography, Card, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTabContext } from '../store/TabContext';
 import { tradeService } from '../services/tradeService';
@@ -20,7 +13,11 @@ import {
   EnergySourceConfig,
 } from '../types/formTypes';
 import { OfferingDetails } from '../types/tradeTypes';
-import renderFields, { initialiseFormData } from './TradeForm.helpers';
+import {
+  EnergySourceSpecificInformationSection,
+  GeneralInformationSection,
+  initialiseFormData,
+} from './TradeForm.helpers';
 
 function TradeForm() {
   const [formData, setFormData] = useState<FormData>({});
@@ -34,7 +31,7 @@ function TradeForm() {
   // Load JSON form configuration
   const config: FormConfig = formConfig as FormConfig;
 
-  // Load common fields and dynamically generate fields based on energy source
+  // Load common fields and dynamically generate fields based on the selected energy source
   useEffect(() => {
     const energySourceConfig = config[energySource] as EnergySourceConfig;
 
@@ -71,7 +68,7 @@ function TradeForm() {
     };
     tradeService.addTrade(offeringDetails);
     setFormData({}); // Reset the form
-    setConfirmDialogOpen(false);
+    setConfirmDialogOpen(false); // Close the confirmation dialog
     setSelectedTab(0); // Set the selected tab to "Trade Manager" after trade submission
     navigate('/trade-manager'); // Redirect to the TradeManager page after trade submission
   };
@@ -82,73 +79,20 @@ function TradeForm() {
         Create a New Trade
       </Typography>
       <Card elevation={2} sx={{ padding: 2 }}>
-        {/* General Information Section */}
-        <Typography variant="h6" gutterBottom>
-          General Information
-        </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
-            gap: 2,
-          }}
-        >
-          {/* Dropdown for selecting energy source */}
-          <Box sx={{ gridColumn: { xs: 'span 12', sm: 'span 6' } }}>
-            <TextField
-              select
-              label="Energy Source"
-              value={energySource}
-              onChange={(e) => setEnergySource(e.target.value as EnergySource)}
-              SelectProps={{
-                native: true,
-              }}
-              fullWidth
-              margin="dense"
-              size="small"
-              sx={{
-                '& .MuiInputBase-input': {
-                  fontSize: '0.9rem',
-                },
-              }}
-            >
-              {/* Map over the energySources array to create options */}
-              {energySources.map((source) => (
-                <option key={source} value={source}>
-                  {source.charAt(0).toUpperCase() + source.slice(1)}
-                </option>
-              ))}
-            </TextField>
-          </Box>
-
-          {/* Render Common Fields */}
-          {renderFields({
-            fieldsToRender: commonFields,
-            formData,
-            setFormData,
-          })}
-        </Box>
-
+        <GeneralInformationSection
+          energySource={energySource}
+          setEnergySource={setEnergySource}
+          energySources={energySources}
+          fields={commonFields}
+          formData={formData}
+          setFormData={setFormData}
+        />
         <Divider sx={{ my: 2 }} />
-
-        {/* Dynamic Fields Section */}
-        <Typography variant="h6" gutterBottom>
-          Energy Source-Specific Information
-        </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
-            gap: 2,
-          }}
-        >
-          {/* Render the energy source-specific dynamic fields */}
-          {renderFields({
-            fieldsToRender: dynamicFields,
-            formData,
-            setFormData,
-          })}
-        </Box>
+        <EnergySourceSpecificInformationSection
+          fields={dynamicFields}
+          formData={formData}
+          setFormData={setFormData}
+        />
         {/* Submit Button */}
         <Box mt={2} display="flex" justifyContent="flex-end">
           <Button variant="contained" color="primary" onClick={handleSubmit}>
