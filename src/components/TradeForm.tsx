@@ -85,7 +85,6 @@ function TradeForm() {
       paymentTerms: formData.paymentTerms as string,
       ...formData, // Include any additional dynamic fields
     };
-    console.log('Submitting trade:', offeringDetails);
     tradeService.addTrade(offeringDetails);
     setFormData({}); // Reset the form
     setConfirmDialogOpen(false);
@@ -177,7 +176,7 @@ function TradeForm() {
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', sm: 'repeat(12, 1fr)' },
-            gap: 2, // Adjusts space between form fields
+            gap: 2,
           }}
         >
           {/* Dropdown for selecting energy source */}
@@ -218,7 +217,6 @@ function TradeForm() {
         <Typography variant="h6" gutterBottom>
           Energy Source-Specific Information
         </Typography>
-        {/* Use Box with CSS Grid for layout */}
         <Box
           sx={{
             display: 'grid',
@@ -226,7 +224,7 @@ function TradeForm() {
             gap: 2,
           }}
         >
-          {/* Render Dynamic Fields based on selected energy source */}
+          {/* Render the energy source-specific dynamic fields */}
           {renderFields(dynamicFields)}
         </Box>
         {/* Submit Button */}
