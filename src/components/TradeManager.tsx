@@ -3,7 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 import { Subscription } from 'rxjs';
 import { tradeService } from '../services/tradeService';
 import TradeDetailDialog from './TradeDetailDialog';
-import { capitalise } from '../utilities/stringFormatter';
+import capitalise from '../utilities/stringFormatter';
 import CustomDialog from './CustomDialog';
 import { StyledDataGrid } from './StyledComponents';
 import { Trade } from '../types/tradeTypes';
