@@ -10,7 +10,7 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 
 // Shaded Header
-export const StyledDialogTitle = styled(MuiDialogTitle)(({ theme }) => ({
+export const StyledDialogTitle = styled(MuiDialogTitle)(() => ({
   backgroundColor: '#f0f0f0',
   padding: '8px 16px',
   display: 'flex',
@@ -24,13 +24,13 @@ export const StyledDialogContent = styled(MuiDialogContent)(({ theme }) => ({
 }));
 
 // Shaded Footer
-export const StyledDialogActions = styled(MuiDialogActions)(({ theme }) => ({
+export const StyledDialogActions = styled(MuiDialogActions)(() => ({
   backgroundColor: '#f0f0f0',
   padding: '8px 16px',
 }));
 
 // Styled DataGrid
-export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+export const StyledDataGrid = styled(DataGrid)(() => ({
   '& .even-row': {
     backgroundColor: '#f9f9f9', // Light gray for even rows
   },
