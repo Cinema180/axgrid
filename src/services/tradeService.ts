@@ -67,8 +67,8 @@ export const createTradeService = () => {
       offeringDetails,
     };
     const currentTrades = tradesSubject.getValue();
-    currentTrades.push(newTrade);
-    tradesSubject.next([...currentTrades]);
+    const updatedTrades = [...currentTrades, newTrade];
+    tradesSubject.next([...updatedTrades]);
   };
 
   const confirmTrade = (tradeId: string): void => {
