@@ -1,10 +1,8 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { of, throwError } from 'rxjs';
 import { tradeService } from './services/tradeService';
-import App from './App';
 import mockTrades from './services/mockTrades';
-import renderComponentWithRouter from './App.test.helpers';
+import { renderComponentWithRouter, renderComponent } from './App.test.helpers';
 
 // Mock the tradeService to avoid real API calls
 jest.mock('./services/tradeService', () => ({
@@ -30,7 +28,7 @@ describe('App', () => {
 
   test('renders navigation tabs and routes to TradeManager', () => {
     // Render the App component
-    render(<App />);
+    renderComponent();
 
     // Check that the navigation tabs are rendered
     expect(screen.getByText('Trade Manager')).toBeInTheDocument();
@@ -66,7 +64,7 @@ describe('App', () => {
     );
 
     // Render the App component
-    render(<App />);
+    renderComponent();
 
     // Check if the error was logged to the console
     expect(console.error).toHaveBeenCalledWith(

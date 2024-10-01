@@ -5,8 +5,13 @@ import App from './App';
 import TradeForm from './components/TradeForm';
 import TradeManager from './components/TradeManager';
 
+// Render the App component
+export function renderComponent() {
+  render(<App />);
+}
+
 // Render the App component with router
-export default function renderComponentWithRouter(path: string) {
+export function renderComponentWithRouter(path: string) {
   render(
     <App
       router={
