@@ -53,4 +53,28 @@ describe('App', () => {
     // Check that the TradeForm is rendered
     expect(screen.getByText('Create a New Trade')).toBeInTheDocument();
   });
+
+  test('subscribes to tradeService.getTrades() and updates trades in TradeContext', () => {
+    // Render the component
+    render(
+      <App
+        router={
+          <MemoryRouter initialEntries={['/']}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/trade-manager" />} />
+              <Route path="/trade-manager" element={<TradeManager />} />
+              <Route path="/new-trade" element={<TradeForm />} />
+            </Routes>
+          </MemoryRouter>
+        }
+      />
+    );
+
+    // Ensure tradeService.getTrades() is called
+    expect(tradeService.getTrades).toHaveBeenCalled();
+
+    // Check that trades are provided in the TradeContext to be available throughout the app
+    expect(screen.getByText(mockTrades[0].id)).toBeInTheDocument();
+  });
+
 });
