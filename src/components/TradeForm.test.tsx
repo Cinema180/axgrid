@@ -78,4 +78,28 @@ describe('TradeForm', () => {
     // Ensure tradeService.addTrade is called after confirmation
     expect(tradeService.addTrade).toHaveBeenCalled();
   });
+
+  test('updates dynamic fields when the energy source is changed', () => {
+    // Render the component with the default energy source (solar)
+    renderWithProviders(<TradeForm />);
+
+    // Check the common fields are rendered
+    formConfig.commonFields.forEach((field) => {
+      expect(screen.getByLabelText(field.label)).toBeInTheDocument();
+    });
+
+    // Check the solar-specific fields are rendered
+    formConfig.solar.fields.forEach((field) => {
+      expect(screen.getByLabelText(field.label)).toBeInTheDocument();
+    });
+
+    // Change the energy source to "wind"
+    const energySourceSelect = screen.getByLabelText('Energy Source');
+    fireEvent.change(energySourceSelect, { target: { value: 'wind' } });
+
+    // Ensure that the wind-specific fields are rendered
+    formConfig.wind.fields.forEach((field) => {
+      expect(screen.getByLabelText(field.label)).toBeInTheDocument();
+    });
+  });
 });
