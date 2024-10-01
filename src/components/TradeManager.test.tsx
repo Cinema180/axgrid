@@ -1,9 +1,8 @@
-import React from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import { of } from 'rxjs';
 import { tradeService } from '../services/tradeService';
-import TradeManager from './TradeManager';
 import mockTrades from '../services/mockTrades';
+import renderComponent from './TradeManager.test.helpers';
 
 // Mock the tradeService
 jest.mock('../services/tradeService', () => ({
@@ -20,8 +19,6 @@ describe('TradeManager', () => {
     (tradeService.getTrades as jest.Mock).mockReturnValue(of(mockTrades));
   });
 
-  const renderComponent = () => render(<TradeManager />);
-
   const getTradeRowById = (tradeId: string): HTMLElement => {
     const tradeRow = screen
       .getByText(tradeId)
@@ -30,6 +27,7 @@ describe('TradeManager', () => {
   };
 
   test('renders the TradeManager component and loads trades', () => {
+    // Render the TradeManager component
     renderComponent();
 
     // Check if the main heading "Manage Trades" is displayed
@@ -40,6 +38,7 @@ describe('TradeManager', () => {
   });
 
   test('opens TradeDetailDialog when "View Details" is clicked for the first trade', () => {
+    // Render the TradeManager component
     renderComponent();
 
     // Get the row for the first trade
@@ -56,6 +55,7 @@ describe('TradeManager', () => {
   });
 
   test('opens confirmation dialog when "Trade" is clicked and confirms the trade', () => {
+    // Render the TradeManager component
     renderComponent();
 
     // Find the first trade with status 'awaiting confirmation'
