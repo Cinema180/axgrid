@@ -39,7 +39,7 @@ describe('App', () => {
   });
 
   test('renders TradeForm when navigating to /new-trade', () => {
-    // Render the App with router and initial route set to '/new-trade'
+    // Render the App component with router and initial route set to '/new-trade'
     renderComponentWithRouter('/new-trade');
 
     // Check that the TradeForm is rendered
@@ -47,7 +47,7 @@ describe('App', () => {
   });
 
   test('subscribes to tradeService.getTrades() and updates trades in TradeContext', () => {
-    // Render the App with router and initial route set to '/'
+    // Render the App component with router and initial route set to '/'
     renderComponentWithRouter('/');
 
     // Ensure tradeService.getTrades() is called
