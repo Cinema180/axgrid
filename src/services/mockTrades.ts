@@ -1,9 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Trade } from '../types/tradeTypes';
 
-const initialTrades: Trade[] = [
+const mockTrades: Trade[] = [
   {
-    id: uuidv4(),
+    id: '52e8753c-3620-4347-b0a4-b51e237b50b7',
     status: 'pending',
     offeringDetails: {
       currency: 'CNY',
@@ -21,7 +20,7 @@ const initialTrades: Trade[] = [
     },
   },
   {
-    id: uuidv4(),
+    id: '62d794a8-e6da-4113-a778-662a6a02289c',
     status: 'pending',
     offeringDetails: {
       currency: 'USD',
@@ -39,8 +38,8 @@ const initialTrades: Trade[] = [
     },
   },
   {
-    id: uuidv4(),
-    status: 'pending',
+    id: '99a1009b-7c05-49e5-a34b-9abd79e86ee4',
+    status: 'awaiting confirmation',
     offeringDetails: {
       currency: 'USD',
       energySource: 'wind',
@@ -58,4 +57,4 @@ const initialTrades: Trade[] = [
   },
 ];
 
-export default initialTrades;
+export default mockTrades;

@@ -11,7 +11,11 @@ import TradeForm from './components/TradeForm';
 import { TabProvider } from './store/TabContext';
 import { Trade } from './types/tradeTypes';
 
-function App() {
+interface AppProps {
+  router?: React.ReactNode;
+}
+
+function App({ router }: AppProps) {
   const [trades, setTrades] = useState<Trade[]>([]);
 
   useEffect(() => {
@@ -31,20 +35,27 @@ function App() {
   return (
     <TabProvider>
       <TradeContext.Provider value={trades}>
-        <BrowserRouter>
-          <Container>
-            <CssBaseline />
-            <Navigation />
-            <Routes>
-              <Route path="/" element={<Navigate to="/trade-manager" />} />
-              <Route path="/trade-manager" element={<TradeManager />} />
-              <Route path="/new-trade" element={<TradeForm />} />
-            </Routes>
-          </Container>
-        </BrowserRouter>
+        {/* Use the provided router or fall back to BrowserRouter */}
+        {router || (
+          <BrowserRouter>
+            <Container>
+              <CssBaseline />
+              <Navigation />
+              <Routes>
+                <Route path="/" element={<Navigate to="/trade-manager" />} />
+                <Route path="/trade-manager" element={<TradeManager />} />
+                <Route path="/new-trade" element={<TradeForm />} />
+              </Routes>
+            </Container>
+          </BrowserRouter>
+        )}
       </TradeContext.Provider>
     </TabProvider>
   );
 }
+
+App.defaultProps = {
+  router: null,
+};
 
 export default App;

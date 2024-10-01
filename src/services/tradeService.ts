@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, Observable } from 'rxjs';
-import initialTrades from './initialTrades';
+import mockTrades from './mockTrades';
 import { Trade, TradeStatus, OfferingDetails } from '../types/tradeTypes';
 
 export const createTradeService = () => {
-  const tradesSubject = new BehaviorSubject<Trade[]>(initialTrades);
+  const tradesSubject = new BehaviorSubject<Trade[]>(mockTrades);
 
   const updateTradeStatus = (tradeId: string, status: TradeStatus): void => {
     const currentTrades = tradesSubject.getValue();
