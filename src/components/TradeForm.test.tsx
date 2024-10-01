@@ -5,6 +5,7 @@ import TradeForm from './TradeForm';
 import formConfig from '../resources/formConfig.json';
 import { TabProvider } from '../store/TabContext';
 import { tradeService } from '../services/tradeService';
+import * as TradeFormHelpers from './TradeForm.helpers';
 
 // Mock the tradeService
 jest.mock('../services/tradeService', () => ({
@@ -14,8 +15,15 @@ jest.mock('../services/tradeService', () => ({
 }));
 
 describe('TradeForm', () => {
+  let initialiseFormData: jest.SpyInstance;
+
   beforeEach(() => {
+    initialiseFormData = jest.spyOn(TradeFormHelpers, 'initialiseFormData');
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    initialiseFormData.mockRestore();
   });
 
   const renderWithProviders = (component: React.ReactNode) => {
@@ -122,5 +130,56 @@ describe('TradeForm', () => {
 
     // Ensure the tradeService.addTrade was called to submit the trade
     expect(tradeService.addTrade).toHaveBeenCalled();
+  });
+
+  test('updates formData when input fields are changed', () => {
+    // Mock initialiseFormData return value
+    initialiseFormData.mockReturnValue({
+      price: '100',
+      contractTerms: 'Short-term',
+    });
+
+    // Render the component
+    renderWithProviders(<TradeForm />);
+
+    // Find the price field, check its current value, and simulate a change event
+    const priceInput = screen.getByLabelText('Price');
+    expect(priceInput).toHaveValue(100);
+    fireEvent.change(priceInput, { target: { value: '200' } });
+
+    // Find the contract terms field, check its current value, and simulate a change event
+    const contractTermsInput = screen.getByLabelText('Contract Terms');
+    expect(contractTermsInput).toHaveValue('Short-term');
+    fireEvent.change(contractTermsInput, { target: { value: 'Long-term' } });
+
+    // Assert that the input values has been updated
+    expect(priceInput).toHaveValue(200);
+    expect(contractTermsInput).toHaveValue('Long-term');
+  });
+
+  test('resets the form after submitting a trade', () => {
+    // Render the component
+    renderWithProviders(<TradeForm />);
+
+    // Set some initial form values for a common field and a dynamic field
+    const priceInput = screen.getByLabelText('Price');
+    fireEvent.change(priceInput, { target: { value: '100' } });
+
+    const contractTermsInput = screen.getByLabelText('Contract Terms');
+    fireEvent.change(contractTermsInput, { target: { value: 'Long-term' } });
+
+    // Click the "Submit Trade" button to open the confirmation dialog
+    const submitButton = screen.getByText('Submit Trade');
+    fireEvent.click(submitButton);
+
+    // Click the "OK" button in the confirmation dialog to confirm
+    const confirmButton = screen.getByText('OK');
+    fireEvent.click(confirmButton);
+
+    // Ensure the tradeService.addTrade was called to submit the trade
+    expect(tradeService.addTrade).toHaveBeenCalled();
+
+    // Check that TradeForm.helpers.initialiseFormData was called to reset the form
+    expect(initialiseFormData).toHaveBeenCalled();
   });
 });
