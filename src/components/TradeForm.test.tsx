@@ -1,11 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, screen } from '@testing-library/react';
 import TradeForm from './TradeForm';
 import formConfig from '../resources/formConfig.json';
-import { TabProvider } from '../store/TabContext';
 import { tradeService } from '../services/tradeService';
 import * as TradeFormHelpers from './TradeForm.helpers';
+import renderWithProviders from './TradeForm.test.helpers';
 
 // Mock the tradeService
 jest.mock('../services/tradeService', () => ({
@@ -26,16 +25,8 @@ describe('TradeForm', () => {
     initialiseFormData.mockRestore();
   });
 
-  const renderWithProviders = (component: React.ReactNode) => {
-    render(
-      <TabProvider>
-        <MemoryRouter>{component}</MemoryRouter>
-      </TabProvider>
-    );
-  };
-
   test('renders the form with common and solar-specific fields by default', () => {
-    // Render the component
+    // Render the TradeForm component
     renderWithProviders(<TradeForm />);
 
     // Check that the main heading is rendered
@@ -53,7 +44,7 @@ describe('TradeForm', () => {
   });
 
   test('opens the confirmation dialog when "Submit Trade" is clicked', () => {
-    // Render the form
+    // Render the TradeForm component
     renderWithProviders(<TradeForm />);
 
     // Find and click the "Submit Trade" button
@@ -67,7 +58,7 @@ describe('TradeForm', () => {
   });
 
   test('confirms trade submission and calls tradeService.addTrade', () => {
-    // Render the form
+    // Render the TradeForm component
     renderWithProviders(<TradeForm />);
 
     // Click "Submit Trade" button to open the confirmation dialog
@@ -88,7 +79,7 @@ describe('TradeForm', () => {
   });
 
   test('updates dynamic fields when the energy source is changed', () => {
-    // Render the component with the default energy source (solar)
+    // Render the TradeForm component (the default energy source is solar)
     renderWithProviders(<TradeForm />);
 
     // Check the common fields are rendered
@@ -96,7 +87,7 @@ describe('TradeForm', () => {
       expect(screen.getByLabelText(field.label)).toBeInTheDocument();
     });
 
-    // Check the solar-specific fields are rendered
+    // Check the default energy source's (solar) specific fields are rendered
     formConfig.solar.fields.forEach((field) => {
       expect(screen.getByLabelText(field.label)).toBeInTheDocument();
     });
@@ -112,7 +103,7 @@ describe('TradeForm', () => {
   });
 
   test('opens confirmation dialog and submits the trade on confirmation', () => {
-    // Render the component
+    // Render the TradeForm component
     renderWithProviders(<TradeForm />);
 
     // Click the "Submit Trade" button
@@ -139,7 +130,7 @@ describe('TradeForm', () => {
       contractTerms: 'Short-term',
     });
 
-    // Render the component
+    // Render the TradeForm component
     renderWithProviders(<TradeForm />);
 
     // Find the price field, check its current value, and simulate a change event
@@ -158,7 +149,7 @@ describe('TradeForm', () => {
   });
 
   test('resets the form after submitting a trade', () => {
-    // Render the component
+    // Render the TradeForm component
     renderWithProviders(<TradeForm />);
 
     // Set some initial form values for a common field and a dynamic field
