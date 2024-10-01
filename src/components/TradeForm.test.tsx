@@ -102,4 +102,25 @@ describe('TradeForm', () => {
       expect(screen.getByLabelText(field.label)).toBeInTheDocument();
     });
   });
+
+  test('opens confirmation dialog and submits the trade on confirmation', () => {
+    // Render the component
+    renderWithProviders(<TradeForm />);
+
+    // Click the "Submit Trade" button
+    const submitButton = screen.getByText('Submit Trade');
+    fireEvent.click(submitButton);
+
+    // Ensure the confirmation dialog opens
+    expect(
+      screen.getByText('Are you sure you want to submit this trade?')
+    ).toBeInTheDocument();
+
+    // Click the "OK" button in the confirmation dialog to confirm
+    const confirmButton = screen.getByText('OK');
+    fireEvent.click(confirmButton);
+
+    // Ensure the tradeService.addTrade was called to submit the trade
+    expect(tradeService.addTrade).toHaveBeenCalled();
+  });
 });
