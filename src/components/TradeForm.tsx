@@ -38,19 +38,20 @@ function TradeForm() {
     // Set common fields from the config
     setCommonFields(config.commonFields);
 
-    // Set dynamic fields based on the selected energy source
+    // Set dynamic fields from the config based on the selected energy source
     if (energySourceConfig && Array.isArray(energySourceConfig.fields)) {
       setDynamicFields(energySourceConfig.fields);
     }
 
-    // Initialise formData with default values
-    const initialFormData = initialiseFormData(
-      config.commonFields,
-      energySourceConfig?.fields || [],
-      formData
+    // Initialize formData when the component mounts or when energySource changes
+    setFormData((prevFormData) =>
+      initialiseFormData(
+        config.commonFields,
+        energySourceConfig?.fields || [],
+        prevFormData
+      )
     );
-    setFormData(initialFormData);
-  }, [energySource, config, formData]);
+  }, [energySource, config]);
 
   const handleSubmit = () => {
     setConfirmDialogOpen(true); // Open confirmation dialog
