@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { MemoryRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { tradeService } from './services/tradeService';
 import App from './App';
@@ -19,7 +19,12 @@ describe('App', () => {
   beforeEach(() => {
     // Mock the getTrades service to return initial trades before each test
     (tradeService.getTrades as jest.Mock).mockReturnValue(of(mockTrades));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks(); // Restore the console.error mock after each test
   });
 
   test('renders navigation tabs and routes to TradeManager', () => {
@@ -77,4 +82,19 @@ describe('App', () => {
     expect(screen.getByText(mockTrades[0].id)).toBeInTheDocument();
   });
 
+  test('handles tradeService subscription error gracefully', () => {
+    // Mock the getTrades service to throw an error
+    (tradeService.getTrades as jest.Mock).mockReturnValue(
+      throwError(() => new Error()) // Use throwError to simulate the error
+    );
+
+    // Render the component
+    render(<App />);
+
+    // Check if the error was logged to the console
+    expect(console.error).toHaveBeenCalledWith(
+      'Failed to fetch trades:',
+      expect.any(Error)
+    );
+  });
 });
