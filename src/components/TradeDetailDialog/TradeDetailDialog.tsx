@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Divider } from '@mui/material';
 import { Subscription } from 'rxjs';
-import formConfig from '../resources/formConfig.json';
-import CustomDialog from './CustomDialog';
-import { tradeService } from '../services/tradeService';
-import { Trade } from '../types/tradeTypes';
+import formConfig from '../../resources/formConfig.json';
+import CustomDialog from '../CustomDialog';
+import { tradeService } from '../../services/tradeService';
+import { Trade } from '../../types/tradeTypes';
 import {
   EnergySourceSpecificInformationSection,
   GeneralInformationSection,

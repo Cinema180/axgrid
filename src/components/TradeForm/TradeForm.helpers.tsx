@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Box, Typography } from '@mui/material';
-import { FormData, FormField } from '../types/formTypes';
-import { EnergySource } from '../types/commonTypes';
+import { FormData, FormField } from '../../types/formTypes';
+import { EnergySource } from '../../types/commonTypes';
 
 interface RenderFieldsProps {
   fields: FormField[];

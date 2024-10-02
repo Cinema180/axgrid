@@ -1,13 +1,13 @@
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import TradeForm from './TradeForm';
-import formConfig from '../resources/formConfig.json';
-import { tradeService } from '../services/tradeService';
+import formConfig from '../../resources/formConfig.json';
+import { tradeService } from '../../services/tradeService';
 import * as TradeFormHelpers from './TradeForm.helpers';
 import renderWithProviders from './TradeForm.test.helpers';
 
 // Mock the tradeService
-jest.mock('../services/tradeService', () => ({
+jest.mock('../../services/tradeService', () => ({
   tradeService: {
     addTrade: jest.fn(),
   },

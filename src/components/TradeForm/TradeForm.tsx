@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, Card, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useTabContext } from '../store/TabContext';
-import { tradeService } from '../services/tradeService';
-import formConfig from '../resources/formConfig.json';
-import CustomDialog from './CustomDialog';
-import { EnergySource, energySources } from '../types/commonTypes';
+import { useTabContext } from '../../store/TabContext';
+import { tradeService } from '../../services/tradeService';
+import formConfig from '../../resources/formConfig.json';
+import CustomDialog from '../CustomDialog';
+import { EnergySource, energySources } from '../../types/commonTypes';
 import {
   FormData,
   FormField,
   FormConfig,
   EnergySourceConfig,
-} from '../types/formTypes';
-import { OfferingDetails } from '../types/tradeTypes';
+} from '../../types/formTypes';
+import { OfferingDetails } from '../../types/tradeTypes';
 import {
   EnergySourceSpecificInformationSection,
   GeneralInformationSection,

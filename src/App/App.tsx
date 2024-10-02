@@ -3,13 +3,13 @@ import './App.css';
 import { Subscription } from 'rxjs';
 import { Container, CssBaseline } from '@mui/material';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { tradeService } from './services/tradeService';
-import TradeContext from './store/TradeContext';
-import Navigation from './components/Navigation';
-import TradeManager from './components/TradeManager';
-import TradeForm from './components/TradeForm';
-import { TabProvider } from './store/TabContext';
-import { Trade } from './types/tradeTypes';
+import { tradeService } from '../services/tradeService';
+import TradeContext from '../store/TradeContext';
+import Navigation from '../components/Navigation';
+import TradeManager from '../components/TradeManager/TradeManager';
+import TradeForm from '../components/TradeForm/TradeForm';
+import { TabProvider } from '../store/TabContext';
+import { Trade } from '../types/tradeTypes';
 
 interface AppProps {
   router?: React.ReactNode;

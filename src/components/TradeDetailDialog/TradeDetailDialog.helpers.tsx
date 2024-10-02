@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import { EnergySource } from '../types/commonTypes';
-import { OfferingDetails, Trade } from '../types/tradeTypes';
-import formConfig from '../resources/formConfig.json';
-import StatusChip from './StatusChip';
+import { EnergySource } from '../../types/commonTypes';
+import { OfferingDetails, Trade } from '../../types/tradeTypes';
+import formConfig from '../../resources/formConfig.json';
+import StatusChip from '../StatusChip';
 
 const getFieldLabel = (
   key: string,
@@ -36,7 +36,10 @@ interface InformationSectionProps {
   trade: Trade;
 }
 
-export function GeneralInformationSection({ trade, fields }: InformationSectionProps) {
+export function GeneralInformationSection({
+  trade,
+  fields,
+}: InformationSectionProps) {
   return (
     <Box sx={{ mt: -1, p: 2, borderRadius: 1, bgcolor: 'background.paper' }}>
       <Typography variant="h6" gutterBottom>

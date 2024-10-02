@@ -1,11 +1,11 @@
 import { fireEvent, screen, within } from '@testing-library/react';
 import { of } from 'rxjs';
-import { tradeService } from '../services/tradeService';
-import mockTrades from '../services/mockTrades';
+import { tradeService } from '../../services/tradeService';
+import mockTrades from '../../services/mockTrades';
 import renderComponent from './TradeManager.test.helpers';
 
 // Mock the tradeService
-jest.mock('../services/tradeService', () => ({
+jest.mock('../../services/tradeService', () => ({
   tradeService: {
     getTrades: jest.fn(),
     confirmTrade: jest.fn(),
