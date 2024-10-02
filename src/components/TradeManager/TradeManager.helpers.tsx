@@ -1,8 +1,8 @@
 import React from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { Box, Button, Tooltip } from '@mui/material';
-import { Trade } from '../types/tradeTypes';
-import StatusChip from './StatusChip';
+import { Trade } from '../../types/tradeTypes';
+import StatusChip from '../StatusChip';
 
 interface ColumnsProps {
   capitalise: (str: string) => string;

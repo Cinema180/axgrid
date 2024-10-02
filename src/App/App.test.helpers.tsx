@@ -2,8 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { MemoryRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from './App';
-import TradeForm from './components/TradeForm';
-import TradeManager from './components/TradeManager';
+import TradeForm from '../components/TradeForm/TradeForm';
+import TradeManager from '../components/TradeManager/TradeManager';
 
 // Render the App component
 export function renderComponent() {

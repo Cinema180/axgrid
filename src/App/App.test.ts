@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react';
 import { of, throwError } from 'rxjs';
-import { tradeService } from './services/tradeService';
-import mockTrades from './services/mockTrades';
+import { tradeService } from '../services/tradeService';
+import mockTrades from '../services/mockTrades';
 import { renderComponentWithRouter, renderComponent } from './App.test.helpers';
 
 // Mock the tradeService to avoid real API calls
-jest.mock('./services/tradeService', () => ({
+jest.mock('../services/tradeService', () => ({
   tradeService: {
     getTrades: jest.fn(),
   },

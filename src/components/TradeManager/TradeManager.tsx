@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { Subscription } from 'rxjs';
-import { tradeService } from '../services/tradeService';
-import TradeDetailDialog from './TradeDetailDialog';
-import capitalise from '../utilities/stringFormatter';
-import CustomDialog from './CustomDialog';
-import { StyledDataGrid } from './StyledComponents';
-import { Trade } from '../types/tradeTypes';
+import { tradeService } from '../../services/tradeService';
+import TradeDetailDialog from '../TradeDetailDialog/TradeDetailDialog';
+import capitalise from '../../utilities/stringFormatter';
+import CustomDialog from '../CustomDialog';
+import { StyledDataGrid } from '../StyledComponents';
+import { Trade } from '../../types/tradeTypes';
 import getColumns from './TradeManager.helpers';
 
 function TradeManager() {
